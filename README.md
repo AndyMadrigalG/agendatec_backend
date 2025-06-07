@@ -1,18 +1,14 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+### AgendaTec Backend
 
 ## Description
+A backend API proyect made with [Nest](https://github.com/nestjs/nest) a TypeScript framework repository.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
+Install Node JS and then start downloading the dependencies
 
-## Project setup
-
+## Project dependencies
+Install all packages by running
 ```bash
 $ npm install
 ```
@@ -51,6 +47,17 @@ When you're ready to deploy your NestJS application to production, there are som
 $ npm install -g @nestjs/mau
 $ mau deploy
 ```
+
+### Local Dev
+
+Run Docker locally and then
+  ```
+  docker compose up
+  ```
+
+### Swagger
+
+To view this API documentation go to localhost:3000/api
 
 ## License
 
