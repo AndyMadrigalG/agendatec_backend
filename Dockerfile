@@ -1,5 +1,6 @@
 
-# Dockerfile for building a Node.js application with Alpine Linux
+# Dockerfile
+# This initial part is for building a Node.js application with Alpine Linux
 ARG NODE_VERSION=22.16
 ARG ALPINE_VERSION=3.22
 
@@ -36,4 +37,4 @@ COPY nest-cli.json .
 
 RUN npm install
 
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start"]

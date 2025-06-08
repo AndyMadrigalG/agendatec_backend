@@ -2,6 +2,7 @@
   "name": "agendatec_backend",
   "version": "0.0.1",
   "description": "",
+  "main": "index.js",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.2.0",
