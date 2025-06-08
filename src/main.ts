@@ -19,6 +19,7 @@ async function bootstrap() {
   // Configura el endpoint de Swagger bajo la ruta /api_swagger
   SwaggerModule.setup('api_swagger', app, document);
 
-  await app.listen(process.env.PORT ?? 3000); //prod env default port 3000 - local testing port 3001 para evitar conflictos de puerto
+  //prod env default port 3000 - local testing port 3001 para evitar conflictos de puerto
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
