@@ -1,5 +1,5 @@
 
-### AgendaTec Backend
+# AgendaTec Backend
 
 ## Description
 A backend API proyect made with [Nest](https://github.com/nestjs/nest) a TypeScript framework repository.
@@ -51,13 +51,13 @@ $ mau deploy
 ### Local Dev
 
 Run Docker locally and then
-  ```
-  docker compose up
-  ```
+```bash
+docker compose up
+```
 
-### Swagger
+## Swagger
 
-To view this API documentation go to localhost:3000/api
+To view this API documentation go to [localhost:3000/api_swagger](http://localhost:3000/api_swagger)
 
 ## License
 
