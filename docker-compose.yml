@@ -1,5 +1,4 @@
-
-# Docker Compose file for setting up a MySQL database
+# Docker Compose file to setup a simple Nest API application
 services:
   app:
     build:
