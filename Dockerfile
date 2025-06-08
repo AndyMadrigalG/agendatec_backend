@@ -1,9 +1,9 @@
 
 # Dockerfile for building a Node.js application with Alpine Linux
-ARG NODE_VERSION=22.10
-ARG ALPINE_VERSION=3.17
+ARG NODE_VERSION=22.16
+ARG ALPINE_VERSION=3.22
 
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} as builder
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 
 WORKDIR /usr/src/app
 

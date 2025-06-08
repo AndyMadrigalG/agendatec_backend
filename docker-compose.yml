@@ -1,0 +1,9 @@
+
+# Docker Compose file for setting up a MySQL database
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    restart: always
