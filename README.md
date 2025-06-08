@@ -1,64 +1,58 @@
-
 # AgendaTec Backend
 
 ## Description
-A backend API proyect made with [Nest](https://github.com/nestjs/nest) a TypeScript framework repository.
+A backend API proyect made with [Nest](https://github.com/nestjs/nest) a TypeScript framework repository
 
 ## Prerequisites
-Install Node JS and then start downloading the dependencies
+If you want to run this project inside a Docker container, you need to have [Docker](https://www.docker.com/get-started) installed on your machine
+
+To run this project you need to install [Node JS](https://nodejs.org/en/download) and then start downloading the project dependencies
 
 ## Project dependencies
-Install all packages by running
+Get all the node packages needed to run this project by running this command:
 ```bash
 $ npm install
 ```
 
 ## Compile and run the project
-
+Choose one of the following commands to compile and run the project depending on your environment:
 ```bash
-# development
+# compile the project
+$ npm run build
+
+# run the project
 $ npm run start
 
-# watch mode
+# Compile and then run the project - this is the same as running `npm run build` and then `npm run start` in one command
+$ npm run up
+
+# This script is for Development purposes, uses watch mode which enables live reload or "hot reload"
+# This will automatically recompile the project when you make changes to the source code
 $ npm run start:dev
 
-# production mode
+# production mode is meant to be run inside a Docker container
 $ npm run start:prod
 ```
 
-## Run tests
-
+## Deployment - Dev Environment - Docker
+To run the Dockerfile locally and generate a docker image that can generate containers, use this command:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ docker compose up
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. 
-
+## Deployment - Prod Environment - GCP Cloud Run
+When you are ready to deploy to production, make sure you have [gcloud CLI](https://cloud.google.com/cli) installed and configured:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-## Local Dev
-
-Run Docker locally with the following command:
-```bash
-docker compose up
+$ gcloud init
 ```
 
 ## Swagger
+The swagger provides a user interface to see the documentation of the API
 
-To view this API documentation go to [localhost:3000/api_swagger](http://localhost:3000/api_swagger)
+On production go to [https://agendatec-backend-371160271556.us-central1.run.app/api_swagger
+](https://agendatec-backend-371160271556.us-central1.run.app/api_swagger)
+
+And for development go to [http://localhost:3000/api_swagger](http://localhost:3000/api_swagger)
 
 ## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE)

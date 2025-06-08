@@ -5,7 +5,6 @@
   "main": "index.js",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "up": "nest build && nest start",
     "build": "nest build",
