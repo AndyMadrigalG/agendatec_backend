@@ -48,9 +48,9 @@ $ npm install -g @nestjs/mau
 $ mau deploy
 ```
 
-### Local Dev
+## Local Dev
 
-Run Docker locally and then
+Run Docker locally with the following command:
 ```bash
 docker compose up
 ```
