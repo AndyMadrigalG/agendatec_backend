@@ -4,9 +4,9 @@
 A backend API proyect made with [Nest](https://github.com/nestjs/nest) a TypeScript framework repository
 
 ## Prerequisites
-If you want to run this project inside a Docker container, you need to have [Docker](https://www.docker.com/get-started) installed on your machine
-
 To run this project you need to install [Node JS](https://nodejs.org/en/download) and then start downloading the project dependencies
+
+If you want to run this project inside a Docker container, you need to have [Docker](https://www.docker.com/get-started) installed
 
 ## Project dependencies
 Get all the node packages needed to run this project by running this command:
