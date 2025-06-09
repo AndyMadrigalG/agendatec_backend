@@ -23,7 +23,7 @@ RUN npm run build
 
 # --- Etapa 2: Producción ---
 # La imagen final que se ejecutará en producción sera mucho más ligera
-FROM --platform=linux/amd64 node:${NODE_VERSION}-alpine${ALPINE_VERSION}
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
 ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
