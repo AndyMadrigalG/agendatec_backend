@@ -32,7 +32,18 @@ export class AuthService {
 
         try {
             const response = await this.signInWithEmailAndPassword(email, password);
-            return response;
+            let output = {};
+            if( response && response.idToken) {
+                // TO-DO: create a user dto to return the user data
+                output = {
+                    accessToken: response.idToken,
+                    refreshToken: response.refreshToken,
+                    expiresIn: response.expiresIn,
+                };
+            } else {
+                output = { response }
+            }
+            return output;
         } catch (error: any) {
             if (error.message.includes('EMAIL_NOT_FOUND')) {
                 throw new Error('User not found.');
@@ -42,6 +53,7 @@ export class AuthService {
                 throw new Error(error.message);
             }
         }
+
     }
 
     async registerUser(registerUser: RegisterUserDto) {
