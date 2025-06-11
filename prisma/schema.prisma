@@ -1,16 +1,16 @@
-// prisma/schema.prisma
-// This is your Prisma schema file, defines data models and database connection
-
+// This is your Prisma schema file, which defines your data models and database connection
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
+// Define the database connection
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
+// Define your data models here
 model Usuario {
   id_Usuario Int    @id @default(autoincrement())
   cedula     String @unique
