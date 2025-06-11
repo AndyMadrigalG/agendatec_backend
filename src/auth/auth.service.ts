@@ -19,7 +19,7 @@ export class AuthService {
     }
 
     private async signInWithEmailAndPassword(email: string, password: string) {
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.APIKEY}`;
+        const url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + process.env.FIREBASE_API_KEY;
         return await this.sendPostRequest(url, {
             email,
             password,
@@ -36,24 +36,18 @@ export class AuthService {
             if( response && response.idToken) {
                 // TO-DO: create a user dto to return the user data
                 output = {
-                    accessToken: response.idToken,
+                    username: response.displayName,
+                    email : response.email,
+                    idToken : response.idToken,
                     refreshToken: response.refreshToken,
                     expiresIn: response.expiresIn,
                 };
-            } else {
-                output = { response }
             }
             return output;
         } catch (error: any) {
-            if (error.message.includes('EMAIL_NOT_FOUND')) {
-                throw new Error('User not found.');
-            } else if (error.message.includes('INVALID_PASSWORD')) {
-                throw new Error('Invalid password.');
-            } else {
-                throw new Error(error.message);
-            }
+            console.error('Error during login:', error);
+            throw new Error(error.message);
         }
-
     }
 
     async registerUser(registerUser: RegisterUserDto) {

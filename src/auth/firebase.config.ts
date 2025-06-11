@@ -1,8 +1,10 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import * as process from "process";
 
+// Firebase API Key is set in .env file
 const firebaseConfig = {
-    apiKey: 'AIzaSyDY-cc7T9q-Bxx-YP39F7yI0R2RObXhz10',
+    apiKey: process.env.FIREBASE_API_KEY+'',
     authDomain: 'agendatec-firebase',
     projectId: 'agendatec-firebase',
     storageBucket: '',
