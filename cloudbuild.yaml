@@ -4,12 +4,15 @@ availableSecrets:
       env: 'FIREBASE_API_KEY'
     - versionName: 'projects/371160271556/secrets/DATABASE_URL/versions/latest'
       env: 'DATABASE_URL'
-    - versionName: 'projects/371160271556/secrets/FIREBASE_JSON/versions/latest'
-      env: 'FIREBASE_JSON'
 
 options:
   logging: 'CLOUD_LOGGING_ONLY'
-
+  volumes:
+    - name: 'firebase-json-volume'
+      secret:
+        secretManagerSecret: 'projects/371160271556/secrets/firebase_service_account_json'
+        items:
+          - version: 'latest'
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
@@ -37,8 +40,3 @@ steps:
 
 images:
   - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
-
-volumes:
-  - name: 'firebase-json-volume'
-    secret:
-      secretName: 'FIREBASE_JSON'
