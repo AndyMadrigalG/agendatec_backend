@@ -20,7 +20,7 @@ steps:
     secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL']
     volumes:
       - name: 'firebase-json-volume'
-        path: 'usr/src/app/firebase_service_account.json'
+        path: '/usr/src/app/firebase_service_account.json'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/agendatec-gcp-proyect/agendatec-backend']
@@ -33,7 +33,7 @@ steps:
            '--allow-unauthenticated']
     volumes:
       - name: 'firebase-json-volume'
-        path: 'usr/src/app/firebase_service_account.json'
+        path: '/usr/src/app/firebase_service_account.json'
 
 images:
   - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
