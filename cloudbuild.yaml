@@ -15,7 +15,7 @@ options:
 
 steps:
   # Paso 1: "Montar" el secret escribiéndolo en un archivo en el container
-  - name: 'gcr.io/cloud-builders/bash'
+  - name: 'gcr.io/cloud-builders/docker'
     id: 'Mount secret file'
     entrypoint: 'bash'
     args: [ '-c', 'echo "$$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json' ]
