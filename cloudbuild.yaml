@@ -4,6 +4,8 @@ availableSecrets:
       env: 'FIREBASE_API_KEY'
     - versionName: 'projects/371160271556/secrets/DATABASE_URL/versions/latest'
       env: 'DATABASE_URL'
+    - versionName: 'projects/371160271556/secrets/FIREBASE_JSON/versions/latest'
+      env: 'FIREBASE_JSON'
 
 options:
   logging: 'CLOUD_LOGGING_ONLY'
