@@ -18,7 +18,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Mount secret file'
     entrypoint: 'bash'
-    args: [ '-c', 'echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json' ]
+    args: [ '-c', 'echo $$FIREBASE_JSON > /firebase_service_account.json' ]
     secretEnv: [ 'FIREBASE_JSON' ]
 
   # Paso 2: Docker build
