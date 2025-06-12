@@ -4,6 +4,7 @@ import * as process from 'process';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as firebaseAdmin from 'firebase-admin';
 import * as fs from 'fs';
+import * as os from 'os';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,11 +24,11 @@ async function bootstrap() {
 
   // firebase auth initialization
   let firebaseKeyFilePath: string;
-  if(!process.env.FIREBASE_JSON) {
-    // If the environment variable is not set, use your local json file
+  if(os.platform() === 'win32') {
+    // If the environment is Windows
     firebaseKeyFilePath = './firebase_service_account.json';
   } else {
-    // If the environment variable is set, json file is in the root of the project on production
+    // If the environment is Linux
     firebaseKeyFilePath = '/firebase_service_account.json';
   }
   const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
