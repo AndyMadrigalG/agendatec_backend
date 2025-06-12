@@ -9,9 +9,9 @@ FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-
 RUN npm install
 
+RUN echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
 COPY src ./src
 COPY tsconfig.json .
 COPY tsconfig.build.json .
@@ -42,5 +42,5 @@ RUN npm install --omit=dev
 
 # Copiamos la aplicación ya compilada desde la etapa 'builder', No necesitamos el código fuente de TypeScript
 COPY --from=builder /usr/src/app/dist ./dist
-
+COPY --from=builder /usr/src/app/firebase_service_account.json /usr/src/app/firebase_service_account.json
 CMD ["npm", "run", "start:prod"]

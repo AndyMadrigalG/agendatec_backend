@@ -24,17 +24,12 @@ async function bootstrap() {
   SwaggerModule.setup('api_swagger', app, document);
 
   // firebase auth initialization
-  console.log('Starting AgendaTec API on ' + os.platform());
-  let firebaseFilePath = os.platform() === 'win32'
-      ? path.join(__dirname, '..', 'firebase_service_account.json')
-      : path.join(__dirname, '..', '..', '..', '..', 'firebase_service_account.json');
-
-  let firebaseServiceAccount;
+  const firebaseFilePath = path.join(__dirname, '..', 'firebase_service_account.json');
   if (!fs.existsSync(firebaseFilePath)) {
     console.log('Firebase service account key file not found at:', firebaseFilePath);
   } else {
     console.log('Firebase service account key file found at:', firebaseFilePath);
-    firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
+    const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
         fs.readFileSync(firebaseFilePath).toString(),
     );
   }
