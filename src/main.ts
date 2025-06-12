@@ -22,7 +22,7 @@ async function bootstrap() {
   SwaggerModule.setup('api_swagger', app, document);
 
   // firebase auth initialization
-  const firebaseKeyFilePath = './src/auth/firebase_service_account.json';
+  const firebaseKeyFilePath = './firebase_service_account.json';
   const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
       fs.readFileSync(firebaseKeyFilePath).toString(),
   );
