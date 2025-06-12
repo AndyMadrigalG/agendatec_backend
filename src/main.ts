@@ -24,7 +24,7 @@ async function bootstrap() {
 
   // firebase auth initialization
   let firebaseServiceAccount;
-  const firebaseFilePath = path.join(__dirname, '..', 'firebasee_service_account.json');
+  const firebaseFilePath = path.join(__dirname, '..', 'firebase_service_account.json');
   if (!fs.existsSync(firebaseFilePath)) {
     console.log('Firebase service account key file not found at:', firebaseFilePath);
   } else {
