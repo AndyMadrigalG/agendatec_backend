@@ -12,15 +12,28 @@ options:
 
 steps:
   - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [ '-c', 'echo $$FIREBASE_JSON ' ]
+    secretEnv: [ 'FIREBASE_JSON' ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [ '-c', 'echo $$DATABASE_URL ' ]
+    secretEnv: [ 'DATABASE_URL' ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: [ '-c', 'echo $$FIREBASE_API_KEY ' ]
+    secretEnv: [ 'FIREBASE_API_KEY' ]
+
+  - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.',
       '--build-arg', 'FIREBASE_API_KEY=${_FIREBASE_API_KEY}',
       '--build-arg', 'DATABASE_URL=${_DATABASE_URL}'
+      '--build-arg', 'FIREBASE_JSON=${_FIREBASE_JSON}'
     ]
-    secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL']
-    volumes:
-      - name: 'firebase-json-volume'
-        path: '/usr/src/app/firebase_service_account.json'
+    secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON']
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/agendatec-gcp-proyect/agendatec-backend']
