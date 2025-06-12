@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
-RUN echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
+RUN mkdir -p /usr/src/app && echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
 COPY src ./src
 COPY tsconfig.json .
 COPY tsconfig.build.json .
