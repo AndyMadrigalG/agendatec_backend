@@ -22,16 +22,17 @@ async function bootstrap() {
   SwaggerModule.setup('api_swagger', app, document);
 
   // firebase auth initialization
-  // const firebaseKeyFilePath = './firebase_service_account.json';
-  // const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
-  //     fs.readFileSync(firebaseKeyFilePath).toString(),
-  // );
-  // if (firebaseAdmin.apps.length === 0) {
-  //   firebaseAdmin.initializeApp({
-  //     credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
-  //   });
-  //   console.log('Initialized Firebase Auth');
-  // }
+  const firebaseKeyFilePath = './firebase_service_account.json';
+  const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
+      fs.readFileSync(firebaseKeyFilePath).toString(),
+  );
+
+  if (firebaseAdmin.apps.length === 0) {
+    firebaseAdmin.initializeApp({
+      credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
+    });
+    console.log('Initialized Firebase Auth');
+  }
 
   await app.listen(process.env.PORT ?? 3000);
 }
