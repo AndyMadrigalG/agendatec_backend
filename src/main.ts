@@ -21,17 +21,19 @@ async function bootstrap() {
   // Configura el endpoint de Swagger bajo la ruta /api_swagger
   SwaggerModule.setup('api_swagger', app, document);
 
+  let current_directory = process.cwd();
+  console.log(">>>>>> THIS IS THE CURRENT DIRECTORY: "+' '+current_directory);
   // firebase auth initialization
-  const firebaseKeyFilePath = './firebase_service_account.json';
-  const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
-      fs.readFileSync(firebaseKeyFilePath).toString(),
-  );
-  if (firebaseAdmin.apps.length === 0) {
-    firebaseAdmin.initializeApp({
-      credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
-    });
-    console.log('Initialized Firebase Auth');
-  }
+  // const firebaseKeyFilePath = './firebase_service_account.json';
+  // const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
+  //     fs.readFileSync(firebaseKeyFilePath).toString(),
+  // );
+  // if (firebaseAdmin.apps.length === 0) {
+  //   firebaseAdmin.initializeApp({
+  //     credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
+  //   });
+  //   console.log('Initialized Firebase Auth');
+  // }
 
   await app.listen(process.env.PORT ?? 3000);
 }
