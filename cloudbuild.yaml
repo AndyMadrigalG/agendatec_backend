@@ -37,8 +37,3 @@ steps:
 
 images:
   - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
-
-volumes:
-  - name: 'firebase-json-volume'
-    secret:
-      secretName: 'FIREBASE_JSON'
