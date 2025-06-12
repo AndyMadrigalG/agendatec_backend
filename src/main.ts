@@ -23,13 +23,11 @@ async function bootstrap() {
   // Configura el endpoint de Swagger bajo la ruta /api_swagger
   SwaggerModule.setup('api_swagger', app, document);
 
-  console.log('Starting AgendaTec API on ' + os.platform());
-  const current_path = process.cwd();
-
   // firebase auth initialization
+  console.log('Starting AgendaTec API on ' + os.platform());
   let firebaseFilePath = os.platform() === 'win32'
       ? path.join(__dirname, '..', 'firebase_service_account.json')
-      : path.join(__dirname, '..', '..', '..', '..', 'firebase_service_account.json');
+      : path.join(__dirname, '..', '..', '..', '..', '/firebase_service_account.json');
 
   let firebaseServiceAccount;
   if (!fs.existsSync(firebaseFilePath)) {

@@ -14,17 +14,13 @@ options:
   logging: 'CLOUD_LOGGING_ONLY'
 
 steps:
-  # Paso 1: "Montar" el secret escribiéndolo en un archivo en el container
+  # Paso 1: Montar el secret escribiéndolo en un archivo en el container
+  # Paso 2: Docker build, incluyendo el archivo del secret y variables de ambiente
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Mount secret file'
     entrypoint: 'bash'
-    args: [ '-c', 'echo $$FIREBASE_JSON > /firebase_service_account.json' ]
-    secretEnv: [ 'FIREBASE_JSON' ]
-
-  # Paso 2: Docker build
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.' ]
-    secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL']
+  args: [ '-c', 'echo $$FIREBASE_JSON > /firebase_service_account.json && docker build -t gcr.io/agendatec-gcp-proyect/agendatec-backend .' ]
+  secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON']
 
   # Paso 3: Docker push to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
