@@ -4,7 +4,6 @@ import * as process from 'process';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as firebaseAdmin from 'firebase-admin';
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from "node:path";
 
 async function bootstrap() {
