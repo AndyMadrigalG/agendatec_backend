@@ -19,7 +19,9 @@ export class RegisterUserDto {
 
     @ApiProperty({ description: "The user's phone number" })
     @IsNotEmpty()
+    @Length(8, 16)
     phoneNumber: string;
+
     @ApiProperty({ description: "The user's password" })
     @IsNotEmpty()
     @Length(6, 20)

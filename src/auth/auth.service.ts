@@ -20,11 +20,12 @@ export class AuthService {
 
     private async signInWithEmailAndPassword(email: string, password: string) {
         const url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + process.env.FIREBASE_API_KEY;
-        return await this.sendPostRequest(url, {
+        const result = await this.sendPostRequest(url, {
             email,
             password,
             returnSecureToken: true,
         });
+        return result;
     }
 
     async loginUser(payload: LoginUserDto) {
@@ -43,27 +44,45 @@ export class AuthService {
                     expiresIn: response.expiresIn,
                 };
             }
+            else if (response === undefined) {
+                output = {
+                    error: {
+                        message: 'Correo electrónico o contraseña inválidos',
+                        code: 400
+                    }
+                }
+            }
             return output;
         } catch (error: any) {
-            console.error('Error during login:', error);
+            //console.error('Error during login:', error);
             throw new Error(error.message);
         }
     }
 
     async registerUser(registerUser: RegisterUserDto) {
-        console.log(registerUser);
+        //console.log(registerUser);
         try {
             const userRecord = await firebaseAdmin.auth().createUser({
-                displayName: registerUser.firstName,
+                displayName: registerUser.firstName + ' ' + registerUser.lastName,
                 email: registerUser.email,
                 password: registerUser.password,
             });
 
-            console.log('User Record:', userRecord);
-            return userRecord;
+            if (userRecord && userRecord.uid) {
+                return {
+                    message: 'Usuario creado exitosamente',
+                    displayName: userRecord.displayName,
+                    email: userRecord.email
+                }
+            }
         } catch (error) {
-            console.error('Error creating user:', error);
-            throw new Error('User registration failed'); // Handle errors
+            return {
+                error: {
+                    message: 'Error creando usuario: ' + error.message,
+                    code: error.status || 400,
+                    details: error.code || null
+                }
+            }
         }
     }
 }

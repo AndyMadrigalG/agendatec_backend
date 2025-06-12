@@ -22,15 +22,15 @@ async function bootstrap() {
   SwaggerModule.setup('api_swagger', app, document);
 
   // firebase auth initialization
-  const firebaseKeyFilePath = './src/auth/agendatec-firebase-adminsdk-credentials.json';
+  const firebaseKeyFilePath = './src/auth/firebase_service_account.json';
   const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
       fs.readFileSync(firebaseKeyFilePath).toString(),
   );
   if (firebaseAdmin.apps.length === 0) {
-    console.log('Initialize Firebase Application.');
     firebaseAdmin.initializeApp({
       credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
     });
+    console.log('Initialized Firebase Auth');
   }
 
   //prod env default port 3000 - local testing port 3001 para evitar conflictos de puerto
