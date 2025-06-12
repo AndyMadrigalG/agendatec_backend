@@ -29,7 +29,7 @@ async function bootstrap() {
   // firebase auth initialization
   let firebaseFilePath = os.platform() === 'win32'
       ? path.join(__dirname, '..', 'firebase_service_account.json')
-      : path.join(__dirname, '..', '..', '..', 'firebase_service_account.json');
+      : path.join(__dirname, '..', '..', '..', '..', 'firebase_service_account.json');
 
   let firebaseServiceAccount;
   if (!fs.existsSync(firebaseFilePath)) {
