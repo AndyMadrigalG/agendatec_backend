@@ -27,16 +27,17 @@ async function bootstrap() {
   const current_path = process.cwd();
 
   // firebase auth initialization
-  console.log("we are in path: " + current_path)
-  console.log("parent folder: " + path.join(__dirname, '..'));
-  const firebaseKeyFilePath = path.join(__dirname, '..', '/firebase_service_account.json');
+  let firebaseFilePath = os.platform() === 'win32'
+      ? path.join(__dirname, '..', 'firebase_service_account.json')
+      : path.join(__dirname, '..', '..', '..', 'firebase_service_account.json');
 
-  if (!fs.existsSync(firebaseKeyFilePath)) {
-    console.log('Firebase service account key file not found at:', firebaseKeyFilePath);
+  let firebaseServiceAccount;
+  if (!fs.existsSync(firebaseFilePath)) {
+    console.log('Firebase service account key file not found at:', firebaseFilePath);
   } else {
-    console.log('Firebase service account key file found at:', firebaseKeyFilePath);
-    var firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
-        fs.readFileSync(firebaseKeyFilePath).toString(),
+    console.log('Firebase service account key file found at:', firebaseFilePath);
+    firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
+        fs.readFileSync(firebaseFilePath).toString(),
     );
   }
 
