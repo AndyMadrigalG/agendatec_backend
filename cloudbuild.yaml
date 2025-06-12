@@ -9,12 +9,7 @@ availableSecrets:
 
 options:
   logging: 'CLOUD_LOGGING_ONLY'
-  volumes:
-    - name: 'firebase-json-volume'
-      secret:
-        secretManagerSecret: 'projects/371160271556/secrets/FIREBASE_JSON'
-        items:
-          - version: 'latest'
+
 steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [
