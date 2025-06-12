@@ -23,12 +23,13 @@ async function bootstrap() {
   SwaggerModule.setup('api_swagger', app, document);
 
   // firebase auth initialization
+  let firebaseServiceAccount;
   const firebaseFilePath = path.join(__dirname, '..', 'firebase_service_account.json');
   if (!fs.existsSync(firebaseFilePath)) {
     console.log('Firebase service account key file not found at:', firebaseFilePath);
   } else {
     console.log('Firebase service account key file found at:', firebaseFilePath);
-    const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
+    firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
         fs.readFileSync(firebaseFilePath).toString(),
     );
   }
