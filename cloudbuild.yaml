@@ -23,11 +23,7 @@ steps:
 
   # Paso 2: Docker build
   - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.',
-      '--build-arg', 'FIREBASE_API_KEY=${_FIREBASE_API_KEY}',
-      '--build-arg', 'DATABASE_URL=${_DATABASE_URL}'
-    ]
+    args: [ 'build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.' ]
     secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL']
 
   # Paso 3: Docker push to Google Container Registry

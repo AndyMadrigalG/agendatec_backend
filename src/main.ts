@@ -22,7 +22,14 @@ async function bootstrap() {
   SwaggerModule.setup('api_swagger', app, document);
 
   // firebase auth initialization
-  const firebaseKeyFilePath = './firebase_service_account.json';
+  let firebaseKeyFilePath: string;
+  if(!process.env.FIREBASE_JSON) {
+    // If the environment variable is not set, use your local json file
+    firebaseKeyFilePath = './firebase_service_account.json';
+  } else {
+    // If the environment variable is set, json file is in the root of the project on production
+    firebaseKeyFilePath = '/firebase_service_account.json';
+  }
   const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
       fs.readFileSync(firebaseKeyFilePath).toString(),
   );
