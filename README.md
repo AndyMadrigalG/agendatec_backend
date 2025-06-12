@@ -56,7 +56,7 @@ gcloud init
 ```
 
 ## Swagger
-The swagger provides a user interface to see the documentation of the API
+This Swagger provides a user interface to see the documentation of the API
 
 On production go to [https://agendatec-backend-371160271556.us-central1.run.app/api_swagger
 ](https://agendatec-backend-371160271556.us-central1.run.app/api_swagger)
