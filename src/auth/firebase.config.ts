@@ -4,7 +4,7 @@ import * as process from "process";
 
 // Firebase API Key is set in .env file
 const firebaseConfig = {
-    apiKey: process.env.FIREBASE_API_KEY+'',
+    apiKey: ''+process.env.FIREBASE_API_KEY,
     authDomain: 'agendatec-firebase',
     projectId: 'agendatec-firebase',
     storageBucket: '',
