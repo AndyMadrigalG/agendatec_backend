@@ -15,10 +15,9 @@ steps:
     args: [
       'build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.',
       '--build-arg', 'FIREBASE_API_KEY=${_FIREBASE_API_KEY}',
-      '--build-arg', 'DATABASE_URL=${_DATABASE_URL}',
-      '--build-arg', 'FIREBASE_JSON=${_FIREBASE_JSON}'
+      '--build-arg', 'DATABASE_URL=${_DATABASE_URL}'
     ]
-    secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON']
+    secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL']
     volumes:
       - name: 'firebase-json-volume'
         path: '/usr/src/app/firebase_service_account.json'
@@ -32,9 +31,6 @@ steps:
            '--image', 'gcr.io/agendatec-gcp-proyect/agendatec-backend',
            '--region', 'us-central1', '--platform', 'managed',
            '--allow-unauthenticated']
-    volumes:
-      - name: 'firebase-json-volume'
-        path: '/usr/src/app/firebase_service_account.json'
 
 images:
   - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
