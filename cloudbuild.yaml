@@ -1,3 +1,6 @@
+images:
+  - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
+
 availableSecrets:
   secretManager:
     - versionName: 'projects/371160271556/secrets/FIREBASE_API_KEY/versions/latest'
@@ -11,21 +14,14 @@ options:
   logging: 'CLOUD_LOGGING_ONLY'
 
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
+  # Paso 1: "Montar" el secret escribiéndolo en un archivo en el container
+  - name: 'gcr.io/cloud-builders/bash'
+    id: 'Mount secret file'
     entrypoint: 'bash'
-    args: [ '-c', 'echo $$FIREBASE_JSON ' ]
+    args: [ '-c', 'echo "$$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json' ]
     secretEnv: [ 'FIREBASE_JSON' ]
 
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'echo $$DATABASE_URL ' ]
-    secretEnv: [ 'DATABASE_URL' ]
-
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args: [ '-c', 'echo $$FIREBASE_API_KEY ' ]
-    secretEnv: [ 'FIREBASE_API_KEY' ]
-
+  # Paso 2: Docker build
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.',
@@ -34,15 +30,14 @@ steps:
     ]
     secretEnv: ['FIREBASE_API_KEY', 'DATABASE_URL']
 
+  # Paso 3: Docker push to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/agendatec-gcp-proyect/agendatec-backend']
 
+  # Paso 4: Deploy to Cloud Run with the previous docker image
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args: ['run', 'deploy', 'agendatec-backend',
            '--image', 'gcr.io/agendatec-gcp-proyect/agendatec-backend',
            '--region', 'us-central1', '--platform', 'managed',
            '--allow-unauthenticated']
-
-images:
-  - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
