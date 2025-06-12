@@ -35,8 +35,6 @@ steps:
       - name: 'firebase-json-volume'
         path: 'usr/src/app/firebase_service_account.json'
 
-
-
 images:
   - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
 
