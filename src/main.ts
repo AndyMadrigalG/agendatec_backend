@@ -29,7 +29,7 @@ async function bootstrap() {
     firebaseKeyFilePath = './firebase_service_account.json';
   } else {
     // If the environment is Linux
-    firebaseKeyFilePath = '/firebase_service_account.json';
+    firebaseKeyFilePath = '../../../../firebase_service_account.json';
   }
   const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
       fs.readFileSync(firebaseKeyFilePath).toString(),
