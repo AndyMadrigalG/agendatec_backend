@@ -32,5 +32,14 @@ steps:
            '--region', 'us-central1', '--platform', 'managed',
            '--allow-unauthenticated']
 
+    volumes:
+      - name: 'firebase-json-volume'
+        path: 'usr/src/app/firebase_service_account.json'
+
 images:
   - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
+
+volumes:
+  - name: 'firebase-json-volume'
+    secret:
+      secretName: 'FIREBASE_JSON'
