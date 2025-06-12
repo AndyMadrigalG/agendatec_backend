@@ -25,10 +25,10 @@ async function bootstrap() {
   // firebase auth initialization
   let firebaseKeyFilePath: string;
   if(os.platform() === 'win32') {
-    // If the environment variable is not set, use your local json file
+    // If the environment is Windows
     firebaseKeyFilePath = './firebase_service_account.json';
   } else {
-    // If the environment variable is set, json file is in the root of the project on production
+    // If the environment is Linux
     firebaseKeyFilePath = '/firebase_service_account.json';
   }
   const firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
