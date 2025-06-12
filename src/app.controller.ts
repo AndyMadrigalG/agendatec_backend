@@ -9,18 +9,10 @@ export class AppController {
   @Get()
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Ejemplo de endpoint Hello World'
-  })
-  hello(): string {
-    return this.appService.getHello();
-  }
-
-  @Get('/is_api_up')
-  @ApiResponse({
-    status: HttpStatus.OK,
     description: 'Valida que la API está funcionando'
   })
   is_api_up(): string {
     return this.appService.is_api_up();
   }
+
 }

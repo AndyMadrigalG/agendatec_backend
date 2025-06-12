@@ -11,6 +11,8 @@ steps:
     entrypoint: 'gcloud'
     args: ['run', 'deploy', 'agendatec-backend',
            '--image', 'gcr.io/agendatec-gcp-proyect/agendatec-backend',
+           '--add-secret', 'secret=projects/371160271556/secrets/backend-env,mount-path=/usr/src/app/.env',
+           '--add-secret', 'secret=projects/371160271556/secrets/firebase-json,mount-path=/app/src/auth/firebase_service_account.json',
            '--region', 'us-central1', '--platform', 'managed',
            '--allow-unauthenticated']
 images:

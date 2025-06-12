@@ -1,49 +1,58 @@
 # AgendaTec Backend
-
-## Description
-A backend API proyect made with [Nest](https://github.com/nestjs/nest) a TypeScript framework repository
-
-## Prerequisites
-To run this project you need to install [Node JS](https://nodejs.org/en/download) and then start downloading the project dependencies
-
-If you want to run this project inside a Docker container, you need to have [Docker](https://www.docker.com/get-started) installed
+This is a backend API project made with [Nest](https://github.com/nestjs/nest) a TypeScript framework repository
 
 ## Project dependencies
-Get all the node packages needed to run this project by running this command:
+If you want to run this project inside a Docker container, you need to have [Docker](https://www.docker.com/get-started) installed
+
+To run this project you need to install [Node JS](https://nodejs.org/en/download) and then start downloading the project dependencies
+
 ```bash
-$ npm install
+# Get all the node packages needed to run this project
+npm install
 ```
 
 ## Compile and run the project
 Choose one of the following commands to compile and run the project depending on your environment:
 ```bash
 # compile the project
-$ npm run build
+npm run build
+```
 
-# run the project
-$ npm run start
+```bash
+# run the project from the build folder
+npm run start
+```
 
+```bash
 # Compile and then run the project - this is the same as running `npm run build` and then `npm run start` in one command
-$ npm run up
+npm run up
+```
 
+```bash
 # This script is for Development purposes, uses watch mode which enables live reload or "hot reload"
 # This will automatically recompile the project when you make changes to the source code
-$ npm run start:dev
+npm run start:dev
+```
 
+```bash
 # production mode is meant to be run inside a Docker container
 $ npm run start:prod
 ```
 
 ## Deployment - Dev Environment - Docker
 To run the Dockerfile locally and generate a docker image that can generate containers, use this command:
+
 ```bash
-$ docker compose up
+# Build the Docker image
+docker compose up
 ```
 
 ## Deployment - Prod Environment - GCP Cloud Run
 When you are ready to deploy to production, make sure you have [gcloud CLI](https://cloud.google.com/cli) installed and configured:
+
 ```bash
-$ gcloud init
+# Authenticate with your Google Cloud account
+gcloud init
 ```
 
 ## Swagger
