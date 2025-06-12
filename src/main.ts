@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as firebaseAdmin from 'firebase-admin';
 import * as fs from 'fs';
 import * as os from 'os';
+import * as path from "node:path";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,15 +25,12 @@ async function bootstrap() {
 
   console.log('Starting AgendaTec API on ' + os.platform());
   const current_path = process.cwd();
+
   // firebase auth initialization
-  let firebaseKeyFilePath: string;
-  if(os.platform() === 'win32') {
-    // If the environment is Windows
-    firebaseKeyFilePath = './firebase_service_account.json';
-  } else {
-    // If the environment is Linux
-    firebaseKeyFilePath = '../../../../firebase_service_account.json';
-  }
+  console.log("we are in path: " + current_path)
+  console.log("parent folder: " + path.join(__dirname, '..'));
+  const firebaseKeyFilePath = path.join(__dirname, '..', '/firebase_service_account.json');
+
   if (!fs.existsSync(firebaseKeyFilePath)) {
     console.log('Firebase service account key file not found at:', firebaseKeyFilePath);
   } else {
