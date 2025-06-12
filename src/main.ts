@@ -33,7 +33,6 @@ async function bootstrap() {
     console.log('Initialized Firebase Auth');
   }
 
-  //prod env default port 3000 - local testing port 3001 para evitar conflictos de puerto
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
