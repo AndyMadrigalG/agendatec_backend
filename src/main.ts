@@ -23,15 +23,17 @@ async function bootstrap() {
   SwaggerModule.setup('api_swagger', app, document);
 
   // firebase auth initialization
-  let firebaseServiceAccount;
-  const firebaseFilePath = path.join(__dirname, '..', 'firebase_service_account.json');
+  let firebaseServiceAccount: firebaseAdmin.ServiceAccount | undefined = undefined;
+  const firebaseFilePath : string = path.join(__dirname, '..', 'firebase_service_account.json');
+
   if (!fs.existsSync(firebaseFilePath)) {
     console.log('Firebase service account key file not found at:', firebaseFilePath);
   } else {
     console.log('Firebase service account key file found at:', firebaseFilePath);
-    firebaseServiceAccount /*: ServiceAccount*/ = JSON.parse(
-        fs.readFileSync(firebaseFilePath).toString(),
-    );
+    const raw = fs.readFileSync(firebaseFilePath, 'utf8');
+    console.log('>> RAW JSON LENGTH:', raw.length);  // Should be > 0
+    console.log('>> RAW JSON PREVIEW:', raw.slice(0, 2393));  // Peek at first 100 chars
+    firebaseServiceAccount = JSON.parse(raw);
   }
 
   if (firebaseAdmin.apps.length === 0 && firebaseServiceAccount !== undefined) {
