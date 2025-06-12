@@ -33,7 +33,12 @@ async function bootstrap() {
     const raw = fs.readFileSync(firebaseFilePath, 'utf8');
     console.log('>> RAW JSON LENGTH:', raw.length);  // Should be > 0
     console.log('>> RAW JSON PREVIEW:', raw.slice(0, 2393));  // Peek at first 100 chars
-    firebaseServiceAccount = JSON.parse(raw);
+    try {
+      firebaseServiceAccount = JSON.parse(raw);
+    } catch (error) {
+      console.error('Error parsing Firebase service account JSON:', error);
+    }
+
   }
 
   if (firebaseAdmin.apps.length === 0 && firebaseServiceAccount !== undefined) {
