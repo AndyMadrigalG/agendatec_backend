@@ -10,6 +10,7 @@ WORKDIR /usr/src/app
 # Copiar el archivo secreto proporcionado por Docker
 RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
 
+# Copiamos los archivos de dependencias
 COPY package*.json ./
 RUN npm install
 
@@ -31,6 +32,7 @@ ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
 
+# Copiamos los archivos de dependencias
 COPY package*.json ./
 # Instalamos SOLO las dependencias de producción, esto deberia reducir el tamaño de la imagen final
 RUN npm install --omit=dev
