@@ -24,8 +24,12 @@ steps:
   # Paso 1: Montar secret, variables de ambiente y luego docker build
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Mount secret file and build Docker image'
-    entrypoint: 'bash'
-    args: [ '-c', 'docker build -t gcr.io/agendatec-gcp-proyect/agendatec-backend . --build-arg FIREBASE_JSON=$$FIREBASE_JSON']
+    args:
+      - build
+      - --build-arg=FIREBASE_API_KEY=$$FIREBASE_API_KEY
+      - -t
+      - gcr.io/agendatec-gcp-proyect/agendatec-backend
+      - .
     secretEnv: [ 'FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON' ]
 
   # Paso 2: Docker push to Google Container Registry
