@@ -10,14 +10,17 @@ WORKDIR /usr/src/app
 # Copiar el archivo secreto proporcionado por Docker
 RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
 
+# Copiamos los archivos de dependencias
 COPY package*.json ./
 RUN npm install
+
+# Generar el cliente de Prisma
+RUN npx prisma generate
 
 COPY src ./src
 COPY tsconfig.json .
 COPY tsconfig.build.json .
 COPY nest-cli.json .
-# TO BE IMPLEMENTED >> configuration for Prisma ORM
 
 # Ejecutamos el comando de build para compilar el código
 RUN npm run build
@@ -31,17 +34,13 @@ WORKDIR /usr/src/app
 
 # Copiamos los archivos de dependencias
 COPY package*.json ./
-# TO BE IMPLEMENTED >> COPY Prisma config file
-
-COPY src ./src
-COPY tsconfig.json .
-COPY tsconfig.build.json .
-COPY nest-cli.json .
-
-# Instalamos ÚNICAMENTE las dependencias de producción, esto reduce drásticamente el tamaño de la imagen
+# Instalamos SOLO las dependencias de producción, esto deberia reducir el tamaño de la imagen final
 RUN npm install --omit=dev
 
-# Copiamos la aplicación ya compilada desde la etapa 'builder', No necesitamos el código fuente de TypeScript
+# Copiar SOLO archivos necesarios desde la etapa 'builder', no necesitamos el codigo src typescript
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/firebase_service_account.json /usr/src/app/firebase_service_account.json
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/prisma ./prisma
+
 CMD ["npm", "run", "start:prod"]
