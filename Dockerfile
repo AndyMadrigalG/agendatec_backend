@@ -7,22 +7,24 @@ FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 
 WORKDIR /usr/src/app
 
-# Copiar el archivo secreto proporcionado por Docker
-RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
-
 # Copiamos los archivos de dependencias
 COPY package*.json ./
 RUN npm install
 
 # Generar el cliente de Prisma
+COPY prisma ./prisma
 RUN npx prisma generate
 
+# Copiar el archivo secreto proporcionado por Docker
+RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
+
+# Copiamos el resto del código fuente para ser compilado a JavaScript
 COPY src ./src
 COPY tsconfig.json .
 COPY tsconfig.build.json .
 COPY nest-cli.json .
 
-# Ejecutamos el comando de build para compilar el código
+# Ejecutamos el comando para compilar el código
 RUN npm run build
 
 # --- Etapa 2: Producción ---

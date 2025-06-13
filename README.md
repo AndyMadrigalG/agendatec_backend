@@ -36,15 +36,20 @@ npm run start:dev
 
 ```bash
 # production mode is meant to be run inside a Docker container
-$ npm run start:prod
+npm run start:prod
 ```
 
 ## Deployment - Dev Environment - Docker
 To run the Dockerfile locally and generate a docker image that can generate containers, use this command:
 
 ```bash
-# Build the Docker image
+# Build Dockerfile into a Docker image 
 docker compose up
+```
+
+```bash
+# Double check you can build the Docker image into a test image before deploying to production
+docker build -t test-image .
 ```
 
 ## Deployment - Prod Environment - GCP Cloud Run
