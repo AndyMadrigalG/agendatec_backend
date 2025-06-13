@@ -7,17 +7,8 @@ FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 
 WORKDIR /usr/src/app
 
-# Declarar los argumentos
-ARG FIREBASE_API_KEY
-ARG DATABASE_URL
-ARG FIREBASE_JSON
-
-# Asignar los argumentos como variables de entorno
-ENV FIREBASE_API_KEY=${FIREBASE_API_KEY}
-ENV DATABASE_URL=${DATABASE_URL}
-ENV FIREBASE_JSON=${FIREBASE_JSON}
-
-RUN echo "${FIREBASE_JSON}" > /usr/src/app/firebase_service_account.json
+# Copiar el archivo secreto proporcionado por Docker
+RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
 
 COPY package*.json ./
 RUN npm install
