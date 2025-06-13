@@ -15,8 +15,12 @@ RUN npm install
 COPY prisma ./prisma
 RUN npx prisma generate
 
+# COMENTAR en caso de testing local
 # Copiar el archivo secreto proporcionado por Docker
 RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
+
+# DESCOMENTAR en caso de testing local
+#COPY firebase_service_account.json /usr/src/app/firebase_service_account.json
 
 # Copiamos el resto del código fuente para ser compilado a JavaScript
 COPY src ./src
@@ -44,5 +48,6 @@ COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/firebase_service_account.json /usr/src/app/firebase_service_account.json
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/generated ./generated
 
 CMD ["npm", "run", "start:prod"]
