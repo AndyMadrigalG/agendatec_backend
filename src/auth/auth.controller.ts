@@ -2,7 +2,8 @@ import { Controller, Post, HttpStatus, UsePipes, ValidationPipe, Body } from '@n
 import { AuthService } from "./auth.service";
 import { ApiResponse } from '@nestjs/swagger';
 import { RegisterUserDto } from "./dto/register-user.dto";
-import {LoginUserDto} from "./dto/login-user.dto";
+import { LoginUserDto } from "./dto/login-user.dto";
+
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +27,7 @@ export class AuthController {
         status: HttpStatus.CREATED,
         description: 'Registra un nuevo usuario para acceder a la aplicacion'
     })
-    registerUser(@Body() registerUserDTo: RegisterUserDto) {
+    registerUser(@Body() registerUserDTo) {
         return this.authService.registerUser(registerUserDTo);
     }
 }
