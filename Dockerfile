@@ -7,6 +7,12 @@ FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 
 WORKDIR /usr/src/app
 
+# Debug: Imprime el contenido de FIREBASE_JSON para verificar que se haya pasado correctamente
+RUN echo "DebugDockerfile FIREBASE_JSON content:" && echo "$FIREBASE_JSON"
+
+# Genera el archivo firebase_service_account.json
+RUN mkdir -p /usr/src/app && echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
+
 COPY package*.json ./
 RUN npm install
 
@@ -23,7 +29,6 @@ RUN npm run build
 # La imagen final que se ejecutará en producción sera mucho más ligera
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
 ENV NODE_ENV=production
-ENV FIREBASE_JSON=$FIREBASE_JSON
 
 WORKDIR /usr/src/app
 
@@ -41,6 +46,6 @@ RUN npm install --omit=dev
 
 # Copiamos la aplicación ya compilada desde la etapa 'builder', No necesitamos el código fuente de TypeScript
 COPY --from=builder /usr/src/app/dist ./dist
-RUN echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
+COPY --from=builder /usr/src/app/firebase_service_account.json /usr/src/app/firebase_service_account.json
 
 CMD ["npm", "run", "start:prod"]
