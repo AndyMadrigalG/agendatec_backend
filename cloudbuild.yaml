@@ -14,13 +14,6 @@ options:
   logging: 'CLOUD_LOGGING_ONLY'
 
 steps:
-  # Paso 0 : Imprimir el secret de Firebase JSON para verificar que se tenemos acceso
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'Print secret json file'
-    entrypoint: 'bash'
-    args: [ '-c', 'echo $$FIREBASE_JSON' ]
-    secretEnv: [ 'FIREBASE_JSON' ]
-
   # Paso 1: Docker build with secret
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Docker Build with secret'
