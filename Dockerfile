@@ -4,7 +4,7 @@
 ARG NODE_VERSION=22.16
 ARG ALPINE_VERSION=3.22
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
-
+ARG FIREBASE_JSON
 WORKDIR /usr/src/app
 
 # Debug: Imprime el contenido de FIREBASE_JSON para verificar que se haya pasado correctamente
