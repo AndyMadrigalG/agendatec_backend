@@ -11,8 +11,9 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
-# Copiamos el archivo de configuración de Firebase - esto es necesario para la autenticación y acceso a servicios de Firebase
-COPY /usr/src/app/firebase_service_account.json /usr/src/app/firebase_service_account.json
+# creamos el folder de configuración de Firebase y copiamos el archivo para conectarse a Firebase
+RUN mkdir -p /usr/src/app && echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json
+
 COPY src ./src
 COPY tsconfig.json .
 COPY tsconfig.build.json .
