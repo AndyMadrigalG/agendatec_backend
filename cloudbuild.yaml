@@ -16,16 +16,18 @@ options:
 steps:
   # Paso 0 : Imprimir el secret de Firebase JSON para verificar que se ha montado correctamente
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Print secret file'
+    id: 'Save secret json file'
     entrypoint: 'bash'
-    args: [ '-c', 'echo $$FIREBASE_JSON' ]
+    args: [ '-c', 'echo $$FIREBASE_JSON > firebase_service_account.json' ]
     secretEnv: [ 'FIREBASE_JSON' ]
 
   # Paso 1: Pasar secret y variables de ambiente para luego docker build
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Send secret as env variable and build Docker image'
     entrypoint: 'bash'
-    args: ['-c', 'echo "DebugCloudBuild " && echo $$FIREBASE_JSON && docker build -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
+    args:
+      - '-c'
+      - docker build --build-arg FIREBASE_JSON=$(cat firebase_service_account.json) -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
     secretEnv: [ 'FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON' ]
 
   # Paso 2: Docker push to Google Container Registry
