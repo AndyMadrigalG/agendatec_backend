@@ -49,14 +49,13 @@ docker compose up
 
 ```bash
 # Double check you can build the Docker image into a test image before deploying to production
-docker build -t test-image .
+docker build -t test-image:testing .
 ```
 
 ```bash
 # Run the Docker image in a container
-docker run -p 3000:3000 test-image
+docker run -p 3000:3000 test-image:testing
 ```
-
 
 ## Deployment - Prod Environment - GCP Cloud Run
 When you are ready to deploy to production, make sure you have [gcloud CLI](https://cloud.google.com/cli) installed and configured:
