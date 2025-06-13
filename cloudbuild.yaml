@@ -25,7 +25,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Send secret as env variable and build Docker image'
     entrypoint: 'bash'
-    args: [ '-c', 'mkdir -p /usr/src/app && echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json && docker build -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
+    args: [ '-c', 'echo -e "FIREBASE_API_KEY=$$FIREBASE_API_KEY\nDATABASE_URL=$$DATABASE_URL\nFIREBASE_JSON=$$FIREBASE_JSON" > env.list && docker build --env-file env.list -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
     secretEnv: [ 'FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON' ]
 
   # Paso 2: Docker push to Google Container Registry
