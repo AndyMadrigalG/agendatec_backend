@@ -2,7 +2,7 @@ import { Controller, Post, HttpStatus, UsePipes, ValidationPipe, Body } from '@n
 import { AuthService } from "./auth.service";
 import { ApiResponse } from '@nestjs/swagger';
 import { RegisterUserDto } from "./dto/register-user.dto";
-import {LoginUserDto} from "./dto/login-user.dto";
+import { LoginUserDto } from "./dto/login-user.dto";
 
 @Controller('auth')
 export class AuthController {

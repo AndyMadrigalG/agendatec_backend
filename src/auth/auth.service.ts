@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { LoginUserDto } from "./dto/login-user.dto";
 import { RegisterUserDto } from "./dto/register-user.dto";
-import axios from 'axios';
 import * as firebaseAdmin from 'firebase-admin';
+import axios from 'axios';
+import prisma from "../prisma.service";
 
 @Injectable()
 export class AuthService {
@@ -59,16 +60,35 @@ export class AuthService {
         }
     }
 
+    async registerUserInDatabase(my_user: RegisterUserDto) {
+        try {
+            const newUser =  await prisma.usuario.create({
+                data: {
+                    nombre: my_user.nombre,
+                    email: my_user.email,
+                    telefono: my_user.telefono,
+                },
+            });
+            return newUser;
+
+        } catch (error) {
+            console.error('Error creating user:', error);
+            throw new Error('Failed to create user');
+        }
+    }
+
     async registerUser(registerUser: RegisterUserDto) {
         //console.log(registerUser);
         try {
             const userRecord = await firebaseAdmin.auth().createUser({
-                displayName: registerUser.firstName + ' ' + registerUser.lastName,
+                displayName: registerUser.nombre,
                 email: registerUser.email,
                 password: registerUser.password,
             });
 
             if (userRecord && userRecord.uid) {
+                // Register user in the database
+                const newUser = await this.registerUserInDatabase(registerUser);
                 return {
                     message: 'Usuario creado exitosamente',
                     displayName: userRecord.displayName,
