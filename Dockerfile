@@ -12,7 +12,7 @@ RUN echo "DebugDockerfile1 FIREBASE_JSON content:" && echo "$FIREBASE_JSON"
 RUN echo "DebugDockerfile2 FIREBASE_JSON content:" && echo $FIREBASE_JSON
 RUN echo "DebugDockerfile3 FIREBASE_JSON content:" && echo "${FIREBASE_JSON}"
 
-# Copiamos el archivo de configuración de Firebase
+# Copiamos el archivo de configuración de Firebase generado en el paso 1 de cloudbuild.yaml
 COPY firebase_service_account.json /usr/src/app/firebase_service_account.json
 
 COPY package*.json ./
