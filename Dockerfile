@@ -1,7 +1,8 @@
 # Dockerfile to build a Node.js application with Alpine Linux
 # --- Etapa 1: Builder ---
 # En esta etapa compilamos la aplicación de TypeScript a JavaScript
-ARG FIREBASE_JSON
+ARG MY_BUILD_ARG
+ENV FIREBASE_JSON=$MY_BUILD_ARG
 ARG NODE_VERSION=22.16
 ARG ALPINE_VERSION=3.22
 

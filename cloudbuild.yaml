@@ -21,12 +21,12 @@ steps:
     args: [ '-c', 'echo $$FIREBASE_JSON' ]
     secretEnv: [ 'FIREBASE_JSON' ]
 
-  # Paso 1: Montar secret, variables de ambiente y luego docker build
+  # Paso 1: Pasar secret y variables de ambiente para luego docker build
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Mount secret file and build Docker image'
+    id: 'Send secret as argument and build Docker image'
     args:
       - build
-      - --build-arg=FIREBASE_API_KEY=$$FIREBASE_API_KEY
+      - --build-arg MY_BUILD_ARG=$$FIREBASE_JSON
       - -t
       - gcr.io/agendatec-gcp-proyect/agendatec-backend
       - .
