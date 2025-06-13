@@ -27,7 +27,7 @@ steps:
     entrypoint: 'bash'
     args:
       - '-c'
-      - docker build --build-arg FIREBASE_JSON=$(cat firebase_service_account.json) -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
+      - docker build --build-arg FIREBASE_JSON=$(cat firebase_service_account.json) -t gcr.io/agendatec-gcp-proyect/agendatec-backend .
     secretEnv: [ 'FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON' ]
 
   # Paso 2: Docker push to Google Container Registry
