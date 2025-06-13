@@ -1,20 +1,14 @@
 # Dockerfile to build a Node.js application with Alpine Linux
 # --- Etapa 1: Builder ---
 # En esta etapa compilamos la aplicación de TypeScript a JavaScript
-ARG MY_BUILD_ARG
-ENV FIREBASE_JSON=$MY_BUILD_ARG
 ARG NODE_VERSION=22.16
 ARG ALPINE_VERSION=3.22
-
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 RUN npm install
-
-# Crear el archivo JSON dentro del contenedor
-RUN mkdir -p /usr/src/app && echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
 
 COPY src ./src
 COPY tsconfig.json .
@@ -29,6 +23,7 @@ RUN npm run build
 # La imagen final que se ejecutará en producción sera mucho más ligera
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
 ENV NODE_ENV=production
+ENV FIREBASE_JSON=$FIREBASE_JSON
 
 WORKDIR /usr/src/app
 
@@ -46,5 +41,6 @@ RUN npm install --omit=dev
 
 # Copiamos la aplicación ya compilada desde la etapa 'builder', No necesitamos el código fuente de TypeScript
 COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/firebase_service_account.json /usr/src/app/firebase_service_account.json
+RUN echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
+
 CMD ["npm", "run", "start:prod"]
