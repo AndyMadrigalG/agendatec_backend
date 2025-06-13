@@ -31,8 +31,7 @@ async function bootstrap() {
   } else {
     console.log('Firebase service account key file found at:', firebaseFilePath);
     const raw = fs.readFileSync(firebaseFilePath, 'utf8');
-    console.log('>> RAW JSON LENGTH:', raw.length);  // Should be > 0
-    console.log('>> RAW JSON PREVIEW:', raw.slice(0, 2393));  // Peek at first 100 chars
+
     try {
       firebaseServiceAccount = JSON.parse(raw);
     } catch (error) {
