@@ -26,8 +26,7 @@ steps:
     id: 'Send secret as argument and build Docker image'
     args:
       - build
-      - --build-arg
-      - MY_BUILD_ARG=$$FIREBASE_JSON
+      - --build-arg=MY_BUILD_ARG=$$FIREBASE_JSON
       - -t
       - gcr.io/agendatec-gcp-proyect/agendatec-backend
       - .
