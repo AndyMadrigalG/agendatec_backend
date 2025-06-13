@@ -30,7 +30,7 @@ steps:
 
   # Paso 2: Docker push to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Push Docker image to GCR
+    id: 'Push Docker image to GCR'
     args: ['push', 'gcr.io/agendatec-gcp-proyect/agendatec-backend']
 
   # Paso 3: Deploy to Cloud Run with the previous docker image
