@@ -4,7 +4,6 @@ import { ApiResponse } from '@nestjs/swagger';
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { LoginUserDto } from "./dto/login-user.dto";
 
-
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
@@ -27,7 +26,7 @@ export class AuthController {
         status: HttpStatus.CREATED,
         description: 'Registra un nuevo usuario para acceder a la aplicacion'
     })
-    registerUser(@Body() registerUserDTo) {
+    registerUser(@Body() registerUserDTo: RegisterUserDto) {
         return this.authService.registerUser(registerUserDTo);
     }
 }
