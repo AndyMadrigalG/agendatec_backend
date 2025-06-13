@@ -7,9 +7,17 @@ FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 
 WORKDIR /usr/src/app
 
-# Copiamos el archivo de configuración de Firebase generado en el paso 1 de cloudbuild.yaml
-COPY .env /usr/src/app/.env
-RUN export $(cat /usr/src/app/.env | xargs)
+# Declarar los argumentos
+ARG FIREBASE_API_KEY
+ARG DATABASE_URL
+ARG FIREBASE_JSON
+
+# Asignar los argumentos como variables de entorno
+ENV FIREBASE_API_KEY=${FIREBASE_API_KEY}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV FIREBASE_JSON=${FIREBASE_JSON}
+
+RUN echo "${FIREBASE_JSON}" > /usr/src/app/firebase_service_account.json
 
 COPY package*.json ./
 RUN npm install
@@ -30,12 +38,6 @@ ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
 
-# Copiar el archivo .env al contenedor
-COPY .env /usr/src/app/.env
-
-# Cargar las variables del archivo .env como variables de entorno
-RUN export $(cat /usr/src/app/.env | xargs)
-
 # Copiamos los archivos de dependencias
 COPY package*.json ./
 # TO BE IMPLEMENTED >> COPY Prisma config file
@@ -50,5 +52,5 @@ RUN npm install --omit=dev
 
 # Copiamos la aplicación ya compilada desde la etapa 'builder', No necesitamos el código fuente de TypeScript
 COPY --from=builder /usr/src/app/dist ./dist
-
+COPY --from=builder /usr/src/app/firebase_service_account.json /usr/src/app/firebase_service_account.json
 CMD ["npm", "run", "start:prod"]
