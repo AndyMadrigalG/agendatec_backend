@@ -4,14 +4,16 @@
 ARG NODE_VERSION=22.16
 ARG ALPINE_VERSION=3.22
 FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
-ARG FIREBASE_JSON
+
 WORKDIR /usr/src/app
 
 # Debug: Imprime el contenido de FIREBASE_JSON para verificar que se haya pasado correctamente
-RUN echo "DebugDockerfile FIREBASE_JSON content:" && echo "$FIREBASE_JSON"
+RUN echo "DebugDockerfile1 FIREBASE_JSON content:" && echo "$FIREBASE_JSON"
+RUN echo "DebugDockerfile2 FIREBASE_JSON content:" && echo $FIREBASE_JSON
+RUN echo "DebugDockerfile3 FIREBASE_JSON content:" && echo "${FIREBASE_JSON}"
 
-# Genera el archivo firebase_service_account.json
-RUN mkdir -p /usr/src/app && echo "$FIREBASE_JSON" > /usr/src/app/firebase_service_account.json
+# Copiamos el archivo de configuración de Firebase
+COPY firebase_service_account.json /usr/src/app/firebase_service_account.json
 
 COPY package*.json ./
 RUN npm install
