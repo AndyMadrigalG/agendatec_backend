@@ -1,7 +1,7 @@
 // This is your Prisma schema file, which defines your data models and database connection
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../generated/prisma/client"
 }
 
 // Define the database connection

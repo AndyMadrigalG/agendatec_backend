@@ -24,7 +24,8 @@ npm run start
 ```
 
 ```bash
-# Compile and then run the project - this is the same as running `npm run build` and then `npm run start` in one command
+# Compile and then run the project
+# this is the same as running `npm run build` and then `npm run start` in one command
 npm run up
 ```
 
