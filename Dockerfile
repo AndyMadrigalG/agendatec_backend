@@ -11,10 +11,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
-# Generar el cliente de Prisma
-COPY prisma ./prisma
-RUN npx prisma generate
-
 # COMENTAR en caso de testing local
 # Copiar el archivo secreto proporcionado por Docker
 RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
@@ -27,6 +23,10 @@ COPY src ./src
 COPY tsconfig.json .
 COPY tsconfig.build.json .
 COPY nest-cli.json .
+
+# Generar el cliente de Prisma
+COPY prisma ./prisma
+RUN npx prisma generate
 
 # Ejecutamos el comando para compilar el código
 RUN npm run build
