@@ -19,7 +19,6 @@ steps:
     id: 'Docker Build'
     entrypoint: 'bash'
     args: [ '-c', 'docker buildx build -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
-    secretEnv: [ 'FIREBASE_API_KEY', 'FIREBASE_JSON', 'DATABASE_URL' ]
 
   # Paso 2: Docker push to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -42,3 +41,4 @@ steps:
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
+    secretEnv: [ 'FIREBASE_API_KEY', 'FIREBASE_JSON', 'DATABASE_URL' ]
