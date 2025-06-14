@@ -18,6 +18,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Docker Build'
     args: ['build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.']
+    secretEnv: [ 'FIREBASE_API_KEY', 'FIREBASE_JSON' ]
 
   # Paso 2: Docker push to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -36,8 +37,6 @@ steps:
       - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
       - '--add-cloudsql-instances=agendatec-gcp-proyect:us-central1:agendatec-database'
       - '--set-secrets=DATABASE_URL=DATABASE_URL:latest'
-      - '--set-secrets=FIREBASE_API_KEY=FIREBASE_API_KEY:latest'
-      - '--set-secrets=FIREBASE_JSON=FIREBASE_JSON:latest'
       - '--region'
       - 'us-central1'
       - '--platform'
