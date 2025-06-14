@@ -14,13 +14,6 @@ options:
   logging: 'CLOUD_LOGGING_ONLY'
 
 steps:
-#    # Paso 0: Necesitamos obtener el service account para Firebase.
-#  - name: 'gcr.io/cloud-builders/docker'
-#    id: 'Create Firebase credentials file'
-#    entrypoint: 'bash'
-#    args: [ '-c', 'mkdir -p /usr/src/app && echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json' ]
-#    secretEnv: [ 'FIREBASE_JSON' ]
-
   # Paso 1: Docker build
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Docker Build'
