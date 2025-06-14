@@ -13,7 +13,7 @@ RUN npm install
 
 # COMENTAR en caso de testing local
 # Copiar el archivo secreto proporcionado por Docker
-RUN --mount=type=secret,id=firebase_json cat /run/secrets/firebase_json > /usr/src/app/firebase_service_account.json
+RUN --mount=type=secret,id=firebase_json echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json
 
 # DESCOMENTAR en caso de testing local
 #COPY firebase_service_account.json /usr/src/app/firebase_service_account.json
@@ -23,6 +23,7 @@ COPY src ./src
 COPY tsconfig.json .
 COPY tsconfig.build.json .
 COPY nest-cli.json .
+
 
 # Generar el cliente de Prisma
 COPY prisma ./prisma

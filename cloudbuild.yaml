@@ -14,12 +14,17 @@ options:
   logging: 'CLOUD_LOGGING_ONLY'
 
 steps:
-  # Paso 1: Docker build with secret
+#    # Paso 0: Necesitamos obtener el service account para Firebase.
+#  - name: 'gcr.io/cloud-builders/docker'
+#    id: 'Create Firebase credentials file'
+#    entrypoint: 'bash'
+#    args: [ '-c', 'mkdir -p /usr/src/app && echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json' ]
+#    secretEnv: [ 'FIREBASE_JSON' ]
+
+  # Paso 1: Docker build
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Docker Build with secret'
-    entrypoint: 'bash'
-    args: [ '-c', 'mkdir -p /usr/src/app && echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json && docker buildx build --secret id=firebase_json,src=/usr/src/app/firebase_service_account.json -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
-    secretEnv: [ 'FIREBASE_API_KEY', 'DATABASE_URL', 'FIREBASE_JSON' ]
+    id: 'Docker Build'
+    args: ['build', '-t', 'gcr.io/agendatec-gcp-proyect/agendatec-backend', '.']
 
   # Paso 2: Docker push to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -28,7 +33,7 @@ steps:
 
   # Paso 3: Deploy to Cloud Run with the previous docker image and Cloud SQL connection
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    id: 'Deploy to Cloud Run with Docker image'
+    id: 'Deploy to Cloud Run with Docker image, Cloud SQL connection, and secrets'
     entrypoint: 'gcloud'
     args:
       - 'run'
@@ -38,6 +43,8 @@ steps:
       - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
       - '--add-cloudsql-instances=agendatec-gcp-proyect:us-central1:agendatec-database'
       - '--set-secrets=DATABASE_URL=DATABASE_URL:latest'
+      - '--set-secrets=FIREBASE_API_KEY=FIREBASE_API_KEY:latest'
+      - '--set-secrets=FIREBASE_JSON=FIREBASE_JSON:latest'
       - '--region'
       - 'us-central1'
       - '--platform'
