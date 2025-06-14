@@ -24,7 +24,6 @@ COPY tsconfig.json .
 COPY tsconfig.build.json .
 COPY nest-cli.json .
 
-
 # Generar el cliente de Prisma
 COPY prisma ./prisma
 RUN npx prisma generate
