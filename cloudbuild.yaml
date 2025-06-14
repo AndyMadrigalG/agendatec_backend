@@ -31,6 +31,7 @@ steps:
     id: 'Deploy to Cloud Run with Docker image'
     entrypoint: 'gcloud'
     args: ['run', 'deploy', 'agendatec-backend',
+           '--add-cloudsql-instances=agendatec-gcp-proyect:us-central1:agendatec-backend',
            '--image', 'gcr.io/agendatec-gcp-proyect/agendatec-backend',
            '--region', 'us-central1', '--platform', 'managed',
            '--allow-unauthenticated']
