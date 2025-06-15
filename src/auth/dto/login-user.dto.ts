@@ -3,13 +3,12 @@ import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 
 export class LoginUserDto {
 
-    @ApiProperty({ description: "The user's email address" })
+    @ApiProperty({ description: "Campo para ingresar el email del usuario" })
     @IsNotEmpty()
     @IsEmail()
-    email: string;
+    usuario: string;
 
-    @ApiProperty({ description: "The user's password" })
+    @ApiProperty({ description: "Campo para ingresar la contraseña" })
     @IsNotEmpty()
-    @Length(6, 20)
-    password: string;
+    contrasena: string;
 }
