@@ -18,7 +18,8 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Docker Build'
     entrypoint: 'bash'
-    args: [ '-c', 'docker buildx build -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
+    args: [ '-c', 'mkdir -p /usr/src/app && echo $$FIREBASE_JSON > /usr/src/app/firebase_service_account.json && docker buildx build --secret id=firebase_json,src=/usr/src/app/firebase_service_account.json -t gcr.io/agendatec-gcp-proyect/agendatec-backend .']
+    secretEnv: [ 'FIREBASE_JSON', 'FIREBASE_API_KEY', 'DATABASE_URL' ]
 
   # Paso 2: Docker push to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
@@ -41,4 +42,3 @@ steps:
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
-    secretEnv: [ 'FIREBASE_API_KEY', 'FIREBASE_JSON', 'DATABASE_URL' ]
