@@ -37,6 +37,7 @@ steps:
       - '--image'
       - 'gcr.io/agendatec-gcp-proyect/agendatec-backend'
       - '--add-cloudsql-instances=agendatec-gcp-proyect:us-central1:agendatec-database'
+      - '--update-secrets=DATABASE_URL=projects/371160271556/secrets/DATABASE_URL/versions/latest'
       - '--region'
       - 'us-central1'
       - '--platform'
