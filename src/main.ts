@@ -6,6 +6,7 @@ import * as firebaseAdmin from 'firebase-admin';
 import * as fs from 'fs';
 import * as path from "node:path";
 
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 

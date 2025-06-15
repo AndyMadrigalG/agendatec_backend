@@ -14,6 +14,4 @@ export class UsuariosController {
     getUsuarios() {
         return this.usuariosService.getUsuarios();
     }
-    
-
 }
