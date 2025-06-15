@@ -18,8 +18,8 @@ export class JuntaController {
     }
 
     @Get()
-        @ApiResponse({ status: 200, description: 'Lista de juntas' })
-        getJuntas() {
-            return this.juntaService.getJuntas();
-        }
+    @ApiResponse({ status: 200, description: 'Lista de juntas' })
+    getJuntas() {
+        return this.juntaService.getJuntas();
+    }
 }

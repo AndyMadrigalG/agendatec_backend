@@ -6,6 +6,12 @@ import { AuthModule } from './auth/auth.module';
 import { UsuariosController } from './usuarios/usuarios.controller';
 import { UsuariosService } from './usuarios/usuarios.service';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { AgendasController } from './agendas/agendas.controller';
+import { AgendasModule } from './agendas/agendas.module';
+import { AgendasService } from './agendas/agendas.service';
+import { PuntosController } from './puntos/puntos.controller';
+import { PuntosService } from './puntos/puntos.service';
+import { PuntosModule } from './puntos/puntos.module';
 import { JuntaController } from './junta/junta.controller';
 import { JuntaModule } from './junta/junta.module';
 import { JuntaService } from './junta/junta.service';
@@ -15,9 +21,11 @@ import { JuntaService } from './junta/junta.service';
       ConfigModule.forRoot({ isGlobal: true }),
       AuthModule,
       UsuariosModule,
-      JuntaModule
+      AgendasModule,
+      PuntosModule,
+      JuntaModule      
   ],
-  controllers: [AppController, UsuariosController, JuntaController],
-  providers: [AppService, UsuariosService, JuntaService],
+  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController],
+  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService],
 })
 export class AppModule {}

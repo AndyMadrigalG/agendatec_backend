@@ -55,9 +55,14 @@ export class AuthService {
                 }
             }
             return output;
-        } catch (error: any) {
-            //console.error('Error during login:', error);
-            throw new Error(error.message);
+        } catch (error) {
+            return {
+                error: {
+                    message: 'Error en login: ' + error.message,
+                    code: error.status || 400,
+                    details: error.code || null
+                }
+            }
         }
     }
 
@@ -71,7 +76,6 @@ export class AuthService {
                 },
             });
             return newUser;
-
         } catch (error) {
             console.error('Error creating user:', error);
             throw new Error('Failed to create user');
@@ -79,7 +83,7 @@ export class AuthService {
     }
 
     async registerUser(registerUser: RegisterUserDto) {
-        //console.log(registerUser);
+
         try {
             const userRecord = await firebaseAdmin.auth().createUser({
                 displayName: registerUser.nombre,
