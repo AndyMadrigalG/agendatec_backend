@@ -46,8 +46,7 @@ async function bootstrap() {
     });
     console.log('Initialized Firebase Auth');
   }
-  console.log("la database url: "+process.env.DATABASE_URL);
-  console.log(" la firebase api: "+process.env.FIREBASE_API_KEY);
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
