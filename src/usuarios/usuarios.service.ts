@@ -1,38 +1,59 @@
 import { Injectable } from '@nestjs/common';
 import { UsuariosResponseDto } from './dto/usuarios-response.dto';
+import prisma from '../prisma.service';
 
 @Injectable()
 export class UsuariosService {
-    async getUsuarios(){
-        const usuarios: UsuariosResponseDto[] = [
-            {
-                id: 1,
-                nombre: 'Usuario 1',
-                email: 'usuario1@example.com',
-                telefono: '1234567890'
-            },
-            {
-                id: 2,
-                nombre: 'Usuario 2',
-                email: 'usuario2@example.com',
-                telefono: '0987654321'
-            },
-            {
-                id: 3,
-                nombre: 'Usuario 3',
-                email: 'usuario3@example.com',
-                telefono: '1122334455'
-            }
-        ];
+    async getUsuarios(): Promise<UsuariosResponseDto[]> {
+        try {
+            const usuarios = await prisma.usuario.findMany();
 
-        return usuarios.map(usuario => {
+            return usuarios.map(usuario => {
+                return {
+                    id: usuario.id_Usuario,
+                    nombre: usuario.nombre,
+                    email: usuario.email,
+                    telefono: usuario.telefono
+                };
+            });
+        } catch (error) {
+            console.error('Error fetching usuarios:', error);
+            throw new Error('Error fetching usuarios');
+        }
+    }
+
+    async getUsuarioById(id: number): Promise<UsuariosResponseDto> {
+        try {
+            const usuario = await prisma.usuario.findUnique({
+                where: { id_Usuario: id }
+            });
+
+            if (!usuario) {
+                throw new Error('Usuario not found');
+            }
+
             return {
-                id: usuario.id,
+                id: usuario.id_Usuario,
                 nombre: usuario.nombre,
                 email: usuario.email,
                 telefono: usuario.telefono
             };
-        });
+        } catch (error) {
+            console.error('Error fetching usuario by id:', error);
+            throw new Error('Error fetching usuario by id');
+        }
+    }
+
+    async deleteUsuario(id: number): Promise<boolean> {
+        try {
+            const usuario = await prisma.usuario.delete({
+                where: { id_Usuario: id }
+            });
+            return !!usuario; 
+        } catch (error) {
+            console.error('Error deleting usuario:', error);
+            throw new Error('Error deleting usuario');
+        }
     }
 }
 

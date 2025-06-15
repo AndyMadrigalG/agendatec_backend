@@ -17,6 +17,8 @@ model Usuario {
   telefono   String
 
   puntosExpositor Punto[] @relation("UsuarioExpositor")
+  Miembro_De_Junta Miembro_De_Junta[]
+
 }
 // Define your data models here
 model Agenda {
@@ -63,5 +65,22 @@ enum PuntoType {
   Aprobación
   Estrategia
   Varios
+}
+
+model Miembro_De_Junta {
+  id              Int      @id @default(autoincrement())
+  usuario_id      Int
+  cargo           String
+  fecha_inicio    DateTime
+  fecha_fin       DateTime?
+  usuario         Usuario  @relation(fields: [usuario_id], references: [id_Usuario])
+  junta           Junta?   @relation(fields: [junta_id], references: [id_Junta])
+  junta_id        Int?
+}
+
+model Junta {
+  id_Junta       Int                 @id @default(autoincrement())
+  nombre         String
+  lista_miembros Miembro_De_Junta[]
 }
 

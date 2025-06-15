@@ -6,8 +6,15 @@ import * as firebaseAdmin from 'firebase-admin';
 import * as fs from 'fs';
 import * as path from "node:path";
 
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+      origin: 'https://agendatec-frontend-371160271556.us-central1.run.app', // Configura el origen permitido
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+      credentials: true, // Permite el envío de cookies y encabezados de autorización
+    });
 
    // Configuracion del documento Swagger para documentación de la API
   const config = new DocumentBuilder()
