@@ -17,15 +17,12 @@ export class UsuariosResponseDto {
     @IsNotEmpty()
     @IsString()
     @IsEmail()
-    email: string;  
-
+    email: string;
 
     @ApiProperty({ description: "The user's phone number" })
     @IsNotEmpty()
     @IsString()
     telefono: string;  
-
-
 
 }
 

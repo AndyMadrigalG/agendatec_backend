@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JuntaDto } from './dto/junta.dto';
-import prisma from 'src/prisma.service';
+import prisma from '../prisma.service';
 
 @Injectable()
 export class JuntaService {
