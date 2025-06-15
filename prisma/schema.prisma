@@ -69,18 +69,18 @@ enum PuntoType {
 }
 
 model Miembro_De_Junta {
-  id_Miembro_De_Junta Int     @id @default(autoincrement())
+  id_Miembro_De_Junta Int       @id @default(autoincrement())
   usuario_id          Int
-  usuario             Usuario @relation(fields: [usuario_id], references: [id_Usuario])
-  junta_id Int
-  junta    Junta @relation(fields: [junta_id], references: [id_Junta])
-  cargo        String
-  fecha_inicio DateTime
-  fecha_fin    DateTime?
+  usuario             Usuario   @relation(fields: [usuario_id], references: [id_Usuario])
+  junta_id            Int
+  junta               Junta     @relation(fields: [junta_id], references: [id_Junta])
+  cargo               String
+  fecha_inicio        DateTime
+  fecha_fin           DateTime?
 }
 
 model Junta {
   id_Junta          Int                @id @default(autoincrement())
   nombre            String
-  Miembros_De_Junta Miembro_De_Junta[]  
+  Miembros_De_Junta Miembro_De_Junta[]
 }
