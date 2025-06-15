@@ -15,6 +15,9 @@ import { PuntosModule } from './puntos/puntos.module';
 import { JuntaController } from './junta/junta.controller';
 import { JuntaModule } from './junta/junta.module';
 import { JuntaService } from './junta/junta.service';
+import { MiembroJuntaController } from './miembroJunta/miembroJunta.controller';
+import { MiembroJuntaService } from './miembroJunta/miembroJunta.service';
+import { MiembroJuntaModule } from './miembroJunta/miembroJunta.module';
 
 @Module({
   imports: [
@@ -23,9 +26,10 @@ import { JuntaService } from './junta/junta.service';
       UsuariosModule,
       AgendasModule,
       PuntosModule,
-      JuntaModule      
+      JuntaModule,
+      MiembroJuntaModule      
   ],
-  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController],
-  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService],
+  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController, MiembroJuntaController],
+  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService, MiembroJuntaService],
 })
 export class AppModule {}
