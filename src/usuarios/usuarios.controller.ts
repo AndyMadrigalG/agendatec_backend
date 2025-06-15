@@ -59,4 +59,39 @@ export class UsuariosController {
             message: 'Usuario eliminado',
         };
     }
+    
+
+    @Get(':id/miembro-junta')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Verifica si el usuario es miembro de junta y retorna su información',
+    })
+    async isUsuarioMiembroDeJunta(@Param('id') id: string) {
+        const numericId = parseInt(id, 10);
+        if (isNaN(numericId)) {
+            return {
+                statusCode: HttpStatus.BAD_REQUEST,
+                message: 'Formato de ID inválido',
+            };
+        }
+        try {
+            const result = await this.usuariosService.isUsuarioMiembroDeJunta(numericId);
+            if (!result) {
+                return {
+                    statusCode: HttpStatus.NOT_FOUND,
+                    message: 'El usuario no es miembro de junta',
+                };
+            }
+            return result;
+        } catch (error) {
+            return {
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Error al verificar si el usuario es miembro de junta',
+            };
+        }
+    }
+
+
+
 }
