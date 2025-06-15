@@ -31,10 +31,10 @@ export class AuthService {
     }
 
     async loginUser(payload: LoginUserDto) {
-        const { email, password } = payload;
+        const { usuario, contrasena } = payload;
 
         try {
-            const response = await this.signInWithEmailAndPassword(email, password);
+            const response = await this.signInWithEmailAndPassword(usuario, contrasena);
             let output = {};
             if( response && response.idToken) {
                 // TO-DO: create a user dto to return the user data
