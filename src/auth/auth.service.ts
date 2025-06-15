@@ -147,7 +147,7 @@ export class AuthService {
             }
 
             return {
-                statusCode: 302,
+                statusCode: HttpStatus.FOUND,
                 url: '/login',
             };
         }
