@@ -31,7 +31,6 @@ model Miembro_De_Junta {
   junta_id        Int?
 }
 
-
 model Junta {
   id_Junta       Int                 @id @default(autoincrement())
   nombre         String
