@@ -70,8 +70,8 @@ export class AuthService {
         try {
             const newUser =  await prisma.usuario.create({
                 data: {
-                    nombre: my_user.nombre,
-                    email: my_user.email,
+                    nombre: my_user.usuario,
+                    email: my_user.correo,
                     telefono: my_user.telefono,
                 },
             });
@@ -86,18 +86,29 @@ export class AuthService {
 
         try {
             const userRecord = await firebaseAdmin.auth().createUser({
-                displayName: registerUser.nombre,
-                email: registerUser.email,
-                password: registerUser.password,
+                displayName: registerUser.usuario,
+                email: registerUser.correo,
+                password: registerUser.contrasena,
             });
 
             if (userRecord && userRecord.uid) {
                 // Register user in the database
-                const newUser = await this.registerUserInDatabase(registerUser);
-                return {
-                    message: 'Usuario creado exitosamente',
-                    displayName: userRecord.displayName,
-                    email: userRecord.email
+                const userRegisterResponse = await this.registerUserInDatabase(registerUser);
+
+                if (!userRegisterResponse || !userRegisterResponse.id_Usuario) {
+                    console.error('Error creando usuario en la base de datos');
+                    return {
+                        error: {
+                            message: 'Error creando usuario en la base de datos',
+                            code: 400,
+                        },
+                    };
+                } else {
+                    // Redirige al login después de registrar al usuario
+                    return {
+                        statusCode: 302,
+                        url: '/auth/login',
+                    };
                 }
             }
         } catch (error) {

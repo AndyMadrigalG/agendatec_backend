@@ -49,7 +49,6 @@ model Punto {
   agendaId Int
 }
 
-// Add the missing enum definition for SessionType
 enum SessionType {
   Ordinaria
   Extraordinaria
