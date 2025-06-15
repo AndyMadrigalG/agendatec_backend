@@ -6,14 +6,18 @@ import { AuthModule } from './auth/auth.module';
 import { UsuariosController } from './usuarios/usuarios.controller';
 import { UsuariosService } from './usuarios/usuarios.service';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { JuntaController } from './junta/junta.controller';
+import { JuntaModule } from './junta/junta.module';
+import { JuntaService } from './junta/junta.service';
 
 @Module({
   imports: [
       ConfigModule.forRoot({ isGlobal: true }),
       AuthModule,
-      UsuariosModule
+      UsuariosModule,
+      JuntaModule
   ],
-  controllers: [AppController, UsuariosController],
-  providers: [AppService, UsuariosService],
+  controllers: [AppController, UsuariosController, JuntaController],
+  providers: [AppService, UsuariosService, JuntaService],
 })
 export class AppModule {}
