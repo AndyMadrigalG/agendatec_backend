@@ -1,38 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { UsuariosResponseDto } from './dto/usuarios-response.dto';
+import prisma from '../prisma.service';
 
 @Injectable()
 export class UsuariosService {
-    async getUsuarios(){
-        const usuarios: UsuariosResponseDto[] = [
-            {
-                id: 1,
-                nombre: 'Usuario 1',
-                email: 'usuario1@example.com',
-                telefono: '1234567890'
-            },
-            {
-                id: 2,
-                nombre: 'Usuario 2',
-                email: 'usuario2@example.com',
-                telefono: '0987654321'
-            },
-            {
-                id: 3,
-                nombre: 'Usuario 3',
-                email: 'usuario3@example.com',
-                telefono: '1122334455'
-            }
-        ];
+    async getUsuarios(): Promise<UsuariosResponseDto[]> {
+        try {
+            const usuarios = await prisma.usuario.findMany();
 
-        return usuarios.map(usuario => {
-            return {
-                id: usuario.id,
-                nombre: usuario.nombre,
-                email: usuario.email,
-                telefono: usuario.telefono
-            };
-        });
+            return usuarios.map(usuario => {
+                return {
+                    id: usuario.id_Usuario,
+                    nombre: usuario.nombre,
+                    email: usuario.email,
+                    telefono: usuario.telefono
+                };
+            });
+        } catch (error) {
+            console.error('Error fetching usuarios:', error);
+            throw new Error('Error fetching usuarios');
+        }
     }
 }
 
