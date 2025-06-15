@@ -12,6 +12,9 @@ import { AgendasService } from './agendas/agendas.service';
 import { PuntosController } from './puntos/puntos.controller';
 import { PuntosService } from './puntos/puntos.service';
 import { PuntosModule } from './puntos/puntos.module';
+import { JuntaController } from './junta/junta.controller';
+import { JuntaModule } from './junta/junta.module';
+import { JuntaService } from './junta/junta.service';
 
 @Module({
   imports: [
@@ -19,9 +22,10 @@ import { PuntosModule } from './puntos/puntos.module';
       AuthModule,
       UsuariosModule,
       AgendasModule,
-      PuntosModule
+      PuntosModule,
+      JuntaModule      
   ],
-  controllers: [AppController, UsuariosController, AgendasController, PuntosController],
-  providers: [AppService, UsuariosService, AgendasService, PuntosService],
+  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController],
+  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService],
 })
 export class AppModule {}
