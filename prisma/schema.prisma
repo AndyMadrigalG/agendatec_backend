@@ -16,49 +16,50 @@ model Usuario {
   email      String @unique
   telefono   String
 
-  puntosExpositor Punto[] @relation("UsuarioExpositor")
+  puntosExpositor  Punto[]            @relation("UsuarioExpositor")
   Miembro_De_Junta Miembro_De_Junta[]
-
 }
+
 // Define your data models here
 model Agenda {
-  id_Agenda Int    @id @default(autoincrement())
-  numero     String
-  tipo       SessionType @default(Ordinaria)
-  fechaHora   DateTime
-  modalidad   Modalidad @default(Presencial)
-  lugar        String
-  link         String
+  id_Agenda Int         @id @default(autoincrement())
+  numero    String
+  tipo      SessionType @default(Ordinaria)
+  fechaHora DateTime
+  modalidad Modalidad   @default(Presencial)
+  lugar     String
+  link      String
 
-  convocarMiembros String    // emails CSV si no es JuntaDirectiva
-  juntaDirectiva   Boolean    @default(false)
+  convocarMiembros String // emails CSV si no es JuntaDirectiva
+  juntaDirectiva   Boolean @default(false)
 
   puntos Punto[]
 }
 
 model Punto {
-  id_Punto       Int         @id @default(autoincrement())
-  expositor      Usuario     @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
-  expositorId    Int
-  tipo           PuntoType   @default(Informativo)
-  duracionMin    Int
-  archivos       String     // Guardar URL(s) como JSON o CSV
-  titulo         String     
+  id_Punto    Int       @id @default(autoincrement())
+  expositor   Usuario   @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
+  expositorId Int
+  tipo        PuntoType @default(Informativo)
+  duracionMin Int
+  archivos    String // Guardar URL(s) como JSON o CSV
+  titulo      String
 
-  agenda         Agenda      @relation(fields: [agendaId], references: [id_Agenda])
-  agendaId       Int
+  agenda   Agenda @relation(fields: [agendaId], references: [id_Agenda])
+  agendaId Int
 }
+
 // Add the missing enum definition for SessionType
 enum SessionType {
   Ordinaria
   Extraordinaria
 }
+
 enum Modalidad {
   Presencial
   Remota
   Hibrida
 }
-
 
 enum PuntoType {
   Informativo
@@ -68,19 +69,18 @@ enum PuntoType {
 }
 
 model Miembro_De_Junta {
-  id              Int      @id @default(autoincrement())
-  usuario_id      Int
-  cargo           String
-  fecha_inicio    DateTime
-  fecha_fin       DateTime?
-  usuario         Usuario  @relation(fields: [usuario_id], references: [id_Usuario])
-  junta           Junta?   @relation(fields: [junta_id], references: [id_Junta])
-  junta_id        Int?
+  id           Int       @id @default(autoincrement())
+  usuario_id   Int
+  cargo        String
+  fecha_inicio DateTime
+  fecha_fin    DateTime?
+  usuario      Usuario   @relation(fields: [usuario_id], references: [id_Usuario])
+  junta        Junta?    @relation(fields: [junta_id], references: [id_Junta])
+  junta_id     Int?
 }
 
 model Junta {
-  id_Junta       Int                 @id @default(autoincrement())
+  id_Junta       Int                @id @default(autoincrement())
   nombre         String
   lista_miembros Miembro_De_Junta[]
 }
-
