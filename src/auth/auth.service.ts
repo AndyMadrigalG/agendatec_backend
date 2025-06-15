@@ -4,6 +4,7 @@ import { RegisterUserDto } from "./dto/register-user.dto";
 import * as firebaseAdmin from 'firebase-admin';
 import axios from 'axios';
 import prisma from "../prisma.service";
+import process from 'process';
 
 @Injectable()
 export class AuthService {
