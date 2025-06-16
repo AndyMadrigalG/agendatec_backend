@@ -3,16 +3,9 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
-  IsEnum,
   IsOptional,
 } from 'class-validator';
 
-export enum PuntoType {
-  Informativo = 'Informativo',
-  Aprobacion = 'Aprobacion',
-  Estrategia = 'Estrategia',
-  Varios = 'Varios',
-}
 
 export class PuntoResponseDto {
   @ApiProperty({ description: "Point's ID" })
@@ -25,10 +18,10 @@ export class PuntoResponseDto {
   @IsNumber()
   expositorId: number;
 
-  @ApiProperty({ description: "Point Type", enum: PuntoType })
+  @ApiProperty({ description: "Point Type" })
   @IsNotEmpty()
-  @IsEnum(PuntoType)
-  tipo: PuntoType;
+  @IsString()
+  tipo: string;
 
   @ApiProperty({ description: "Estimated duration in mins" })
   @IsNotEmpty()

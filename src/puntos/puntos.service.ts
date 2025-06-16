@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PuntoResponseDto, PuntoType } from './dto/puntos-response.dto';
+import { PuntoResponseDto } from './dto/puntos-response.dto';
 
 @Injectable()
 export class PuntosService {
@@ -7,7 +7,7 @@ export class PuntosService {
     {
       id_Punto: 1,
       expositorId: 2,
-      tipo: PuntoType.Informativo,
+      tipo: "Informativo",
       duracionMin: 30,
       archivos: "undefined",
       titulo: 'Aprobación del acta anterior',
@@ -16,7 +16,7 @@ export class PuntosService {
     {
       id_Punto: 2,
       expositorId: 3,
-      tipo: PuntoType.Estrategia,
+      tipo: "Estrategia",
       duracionMin: 45,
       archivos: '["https://example.com/doc.pdf"]',
       titulo: 'Revisión del presupuesto',
@@ -25,7 +25,7 @@ export class PuntosService {
     {
       id_Punto: 3,
       expositorId: 2,
-      tipo: PuntoType.Aprobacion,
+      tipo: "Aprobacion",
       duracionMin: 60,
       archivos: "undefined",
       titulo: 'Decisión sobre nuevos proyectos',
