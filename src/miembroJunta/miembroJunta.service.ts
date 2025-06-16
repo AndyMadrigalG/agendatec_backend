@@ -42,4 +42,39 @@ export class MiembroJuntaService {
         }
     }
 
+    // Modificar un miembro de la junta
+    async updateMiembroJunta(id: number, data: Partial<MiembroJuntaDto>): Promise<MiembroJuntaDto> {
+        try {
+            const miembroJunta = await prisma.miembro_De_Junta.update({
+                where: { id_Miembro_De_Junta: id },
+                data: {
+                    ...data
+                }
+            });
+            return {
+                id_Miembro_De_Junta: miembroJunta.id_Miembro_De_Junta,
+                usuario_id: miembroJunta.usuario_id,
+                junta_id: miembroJunta.junta_id,
+                cargo: miembroJunta.cargo,
+                fecha_inicio: miembroJunta.fecha_inicio,
+                fecha_fin: miembroJunta.fecha_fin === null ? undefined : miembroJunta.fecha_fin
+            };
+        } catch (error) {
+            console.error('Error al actualizar el miembro de la junta:', error);
+            throw new Error('Error al actualizar el miembro de la junta');
+        }
+    }
+
+    async deleteMiembroJunta(id: number): Promise<boolean> {
+        try {
+            await prisma.miembro_De_Junta.delete({
+                where: { id_Miembro_De_Junta: id }
+            });
+            return true;
+        } catch (error) {
+            console.error('Error al eliminar el miembro de la junta:', error);
+            throw new Error('Error al eliminar el miembro de la junta');
+        }
+    }
+
 }
