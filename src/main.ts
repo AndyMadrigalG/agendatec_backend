@@ -6,15 +6,17 @@ import * as firebaseAdmin from 'firebase-admin';
 import * as fs from 'fs';
 import * as path from "node:path";
 
+const PROD_URL = 'https://agendatec-frontend-371160271556.us-central1.run.app'
+const DEV_URL = 'http://localhost:3000'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-      origin: 'https://agendatec-frontend-371160271556.us-central1.run.app', // Configura el origen permitido
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
-      credentials: true, // Permite el envío de cookies y encabezados de autorización
-    });
+    origin: [PROD_URL, DEV_URL], // Configura el origen permitido
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+    credentials: true, // Permite el envío de cookies y encabezados de autorización
+  });
 
    // Configuracion del documento Swagger para documentación de la API
   const config = new DocumentBuilder()
@@ -55,6 +57,6 @@ async function bootstrap() {
   }
   console.log("la database url: "+process.env.DATABASE_URL);
   console.log(" la firebase api: "+process.env.FIREBASE_API_KEY);
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
