@@ -2,30 +2,17 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsString,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsDateString,
-  IsBoolean,
+  IsArray,
+  IsDate,
 } from 'class-validator';
-import { PuntoResponseDto, PuntoType } from 'src/puntos/dto/puntos-response.dto';
-
-
-export enum SessionType {
-  Ordinaria = 'Ordinaria',
-  Extraordinaria = 'Extraordinaria',
-}
-
-export enum Modalidad {
-  Presencial = 'Presencial',
-  Remota = 'Remota',
-  Hibrida = 'Hibrida',
-}
+import { Type } from 'class-transformer';
+import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 
 export class AgendasResponseDto {
   @ApiProperty({ description: "The agenda's id" })
-  @IsNotEmpty()
-  @IsNumber()
   id_Agenda: number;
 
   @ApiProperty({ description: "Session number" })
@@ -35,29 +22,19 @@ export class AgendasResponseDto {
 
   @ApiProperty({
     description: "Session type",
-    enum: SessionType,
-    example: SessionType.Ordinaria,
   })
   @IsNotEmpty()
-  @IsEnum(SessionType)
-  tipo: SessionType;
+  @IsString()
+  tipo: string;
 
   @ApiProperty({
-    description: "Date and tyme the sesison will take place",
+    description: "Date and time the session will take place",
     required: false,
   })
+  @Type(() => Date)
   @IsOptional()
-  @IsDateString()
-  fechaHora: string;
-
-  @ApiProperty({
-    description: "Session's modality",
-    enum: Modalidad,
-    example: Modalidad.Presencial,
-  })
-  @IsNotEmpty()
-  @IsEnum(Modalidad)
-  modalidad: Modalidad;
+  @IsDate()
+  fechaHora: Date;
 
   @ApiProperty({
     description: "Session's place (if presencial)",
@@ -67,35 +44,6 @@ export class AgendasResponseDto {
   @IsString()
   lugar: string;
 
-  @ApiProperty({
-    description: "Session's link (if remote or hybrid)",
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  link: string;
-
-  @ApiProperty({
-    description: "Emails of members to be summoned (if not in the board)",
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  convocarMiembros: string;
-
-  @ApiProperty({
-    description: "Indicates if the session is for the board of directors",
-    default: false,
-  })
-  @IsBoolean()
-  juntaDirectiva: boolean;
-
-  @ApiProperty({
-    description: "Lista de puntos de la agenda",
-    type: [PuntoResponseDto],
-  })
-  @IsOptional()
-  puntos: PuntoResponseDto[];
 }
 
 

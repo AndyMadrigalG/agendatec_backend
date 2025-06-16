@@ -13,7 +13,7 @@ model Usuario {
   nombre           String
   email            String             @unique
   telefono         String
-
+  
   Miembro_De_Junta Miembro_De_Junta[]
   miembrosConvocados miembrosConvocados[]
   Punto Punto[] @relation("UsuarioExpositor")
@@ -22,7 +22,7 @@ model Usuario {
 model Agenda {
   id_Agenda Int         @id @default(autoincrement())
   numero    String
-  tipo      String
+  tipo      String 
   fechaHora DateTime
   lugar     String
 

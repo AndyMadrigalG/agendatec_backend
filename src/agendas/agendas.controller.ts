@@ -1,19 +1,25 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UsePipes, ValidationPipe, HttpStatus, Post, Body } from '@nestjs/common';
 import { AgendasService } from './agendas.service';
-import { Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { FirebaseAuthGuard } from "../auth/firebase-auth.guard";
+import { AgendasResponseDto } from './dto/agendas-response.dto';
+import { get } from 'http';
 
 @Controller('agendas')
 export class AgendasController {
     constructor(private agendasService: AgendasService) {}
 
+    @Post()
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({ status: HttpStatus.CREATED, type: AgendasResponseDto })
+    async postAgenda(@Body() agenda: AgendasResponseDto): Promise<AgendasResponseDto> {
+        return this.agendasService.postAgenda(agenda);
+    }
+
     @Get()
-    @UseGuards(FirebaseAuthGuard)
-    @ApiResponse({ status: 200, description: 'Lista de agendas' })
-    getAgendas() {
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({ status: HttpStatus.OK, type: [AgendasResponseDto] })
+    async getAgendas(): Promise<AgendasResponseDto[]> {
         return this.agendasService.getAgendas();
     }
-    
 
 }
