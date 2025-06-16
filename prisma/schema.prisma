@@ -1,52 +1,68 @@
-// This is your Prisma schema file, which defines your data models and database connection
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma/client"
 }
 
-// Define the database connection
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Usuario {
-  id_Usuario Int    @id @default(autoincrement())
-  nombre     String
-  email      String @unique
-  telefono   String
-
-  puntosExpositor  Punto[]            @relation("UsuarioExpositor")
+  id_Usuario       Int                @id @default(autoincrement())
+  nombre           String
+  email            String             @unique
+  telefono         String
   Miembro_De_Junta Miembro_De_Junta[]
+  puntosExpositor  Punto[]            @relation("UsuarioExpositor")
 }
 
-// Define your data models here
 model Agenda {
-  id_Agenda Int         @id @default(autoincrement())
-  numero    String
-  tipo      SessionType @default(Ordinaria)
-  fechaHora DateTime
-  modalidad Modalidad   @default(Presencial)
-  lugar     String
-  link      String
-
-  convocarMiembros String // emails CSV si no es JuntaDirectiva
-  juntaDirectiva   Boolean @default(false)
-
-  puntos Punto[]
+  id_Agenda        Int         @id @default(autoincrement())
+  numero           String
+  tipo             SessionType @default(Ordinaria)
+  fechaHora        DateTime
+  modalidad        Modalidad   @default(Presencial)
+  lugar            String
+  link             String
+  convocarMiembros String
+  juntaDirectiva   Boolean     @default(false)
+  puntos           Punto[]
 }
 
 model Punto {
   id_Punto    Int       @id @default(autoincrement())
-  expositor   Usuario   @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
   expositorId Int
   tipo        PuntoType @default(Informativo)
   duracionMin Int
-  archivos    String // Guardar URL(s) como JSON o CSV
+  archivos    String
   titulo      String
+  agendaId    Int
+  agenda      Agenda    @relation(fields: [agendaId], references: [id_Agenda])
+  expositor   Usuario   @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
 
-  agenda   Agenda @relation(fields: [agendaId], references: [id_Agenda])
-  agendaId Int
+  @@index([agendaId], map: "Punto_agendaId_fkey")
+  @@index([expositorId], map: "Punto_expositorId_fkey")
+}
+
+model Miembro_De_Junta {
+  usuario_id          Int
+  cargo               String
+  fecha_inicio        DateTime
+  fecha_fin           DateTime?
+  junta_id            Int
+  id_Miembro_De_Junta Int       @id @default(autoincrement())
+  junta               Junta     @relation(fields: [junta_id], references: [id_Junta])
+  usuario             Usuario   @relation(fields: [usuario_id], references: [id_Usuario])
+
+  @@index([junta_id], map: "Miembro_De_Junta_junta_id_fkey")
+  @@index([usuario_id], map: "Miembro_De_Junta_usuario_id_fkey")
+}
+
+model Junta {
+  id_Junta          Int                @id @default(autoincrement())
+  nombre            String
+  Miembros_De_Junta Miembro_De_Junta[]
 }
 
 enum SessionType {
@@ -62,24 +78,7 @@ enum Modalidad {
 
 enum PuntoType {
   Informativo
-  Aprobación
+  Aprobacion
   Estrategia
   Varios
-}
-
-model Miembro_De_Junta {
-  id_Miembro_De_Junta Int       @id @default(autoincrement())
-  usuario_id          Int
-  usuario             Usuario   @relation(fields: [usuario_id], references: [id_Usuario])
-  junta_id            Int
-  junta               Junta     @relation(fields: [junta_id], references: [id_Junta])
-  cargo               String
-  fecha_inicio        DateTime
-  fecha_fin           DateTime?
-}
-
-model Junta {
-  id_Junta          Int                @id @default(autoincrement())
-  nombre            String
-  Miembros_De_Junta Miembro_De_Junta[]
 }
