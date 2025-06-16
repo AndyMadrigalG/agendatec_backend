@@ -13,27 +13,36 @@ model Usuario {
   nombre           String
   email            String             @unique
   telefono         String
+
   Miembro_De_Junta Miembro_De_Junta[]
-  puntosExpositor  Punto[]            @relation("UsuarioExpositor")
+  miembrosConvocados miembrosConvocados[]
+  Punto Punto[] @relation("UsuarioExpositor")
 }
 
 model Agenda {
-  id_Agenda        Int         @id @default(autoincrement())
-  numero           String
-  tipo             SessionType @default(Ordinaria)
-  fechaHora        DateTime
-  modalidad        Modalidad   @default(Presencial)
-  lugar            String
-  link             String
-  convocarMiembros String
-  juntaDirectiva   Boolean     @default(false)
-  puntos           Punto[]
+  id_Agenda Int         @id @default(autoincrement())
+  numero    String
+  tipo      String
+  fechaHora DateTime
+  lugar     String
+
+  miembrosConvocados miembrosConvocados[]
+  puntos    Punto[]
+}
+
+model miembrosConvocados {
+  id_miembrosConvocados Int @id @default(autoincrement())
+  id_Agenda   Int
+  id_Convocado Int
+
+  Agenda     Agenda   @relation(fields: [id_Agenda], references: [id_Agenda])
+  Convocado Usuario @relation(fields: [id_Convocado], references: [id_Usuario])
 }
 
 model Punto {
   id_Punto    Int       @id @default(autoincrement())
   expositorId Int
-  tipo        PuntoType @default(Informativo)
+  tipo        String
   duracionMin Int
   archivos    String
   titulo      String
@@ -63,22 +72,4 @@ model Junta {
   id_Junta          Int                @id @default(autoincrement())
   nombre            String
   Miembros_De_Junta Miembro_De_Junta[]
-}
-
-enum SessionType {
-  Ordinaria
-  Extraordinaria
-}
-
-enum Modalidad {
-  Presencial
-  Remota
-  Hibrida
-}
-
-enum PuntoType {
-  Informativo
-  Aprobacion
-  Estrategia
-  Varios
 }
