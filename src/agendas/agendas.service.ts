@@ -43,4 +43,25 @@ export class AgendasService {
     }
   }
 
+  async getAgendaById(id: number): Promise<AgendasResponseDto | undefined> {
+    try {
+      const agenda = await prisma.agenda.findUnique({
+        where: { id_Agenda: id },
+      });
+
+      if (!agenda) return undefined;
+
+      return {
+        id_Agenda: agenda.id_Agenda,
+        numero: agenda.numero,
+        tipo: agenda.tipo,
+        fechaHora: agenda.fechaHora,
+        lugar: agenda.lugar,
+      };
+    } catch (error) {
+      console.error('Error fetching agenda by ID:', error);
+      throw new Error('Could not fetch agenda by ID');
+    }
+  }
+
 }
