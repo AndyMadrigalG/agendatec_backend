@@ -22,4 +22,11 @@ export class AgendasController {
         return this.agendasService.getAgendas();
     }
 
+    @Get(':id')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({ status: HttpStatus.OK, type: AgendasResponseDto })
+    async getAgendaById(@Param('id') id: number): Promise<AgendasResponseDto | undefined> {
+        return this.agendasService.getAgendaById(id);
+    }
+
 }
