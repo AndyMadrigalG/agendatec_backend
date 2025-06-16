@@ -7,7 +7,7 @@ import * as fs from 'fs';
 import * as path from "node:path";
 
 const PROD_URL = 'https://agendatec-frontend-371160271556.us-central1.run.app'
-const DEV_URL = 'http://localhost:3000'
+const DEV_URL = 'http://localhost:3001'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
