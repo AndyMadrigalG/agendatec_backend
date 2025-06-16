@@ -1,11 +1,548 @@
 {
 	"info": {
-		"_postman_id": "dc0523e5-7ba4-4282-b476-de17f0100c31",
+		"_postman_id": "713625eb-1353-4dfc-a808-64b7e25d7668",
 		"name": "AgendaTec API Testing v 1.2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "17431737"
 	},
 	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"  let response = pm.response.json()\r",
+									"  // Stores the tokens in collection variables not environment nor global variable\r",
+									"  pm.collectionVariables.set(\"IdToken\", response?.idToken)\r",
+									"  pm.collectionVariables.set(\"RefreshToken\", response?.refreshToken)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{IdToken}}",
+								"type": "text"
+							},
+							{
+								"key": "x-refresh-token",
+								"value": "{{RefreshToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"  pm.response.to.have.status(201);\r",
+									"  let response = pm.response.json()\r",
+									"  // Stores the tokens in collection variables not environment nor global variable\r",
+									"  pm.collectionVariables.set(\"IdToken\", response?.idToken)\r",
+									"  pm.collectionVariables.set(\"RefreshToken\", response?.refreshToken)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuario\": \"andres@test.com\",\r\n  \"contrasena\": \"andres\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuario\": \"test test\",\r\n    \"correo\": \"test@test.com\",\r\n    \"telefono\": \"1111 2222\",\r\n    \"contrasena\": \"12345abcd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "usuarios",
+			"item": [
+				{
+					"name": "usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{IdToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/usuarios",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUsuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{IdToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/usuarios/19",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUsuarioById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/usuarios/18",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios",
+								"18"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editUsuario",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Javier Diaz\",\r\n    \"email\": \"javi@test.com\",\r\n    \"telefono\": \"8111 7222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/usuarios/18",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"usuarios",
+								"18"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "junta",
+			"item": [
+				{
+					"name": "newJunta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{IdToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Junta Directiva TEC\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/junta",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"junta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getJuntas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{IdToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}/junta",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"junta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMiembrosbyJuntaId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/junta/1/miembros",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"junta",
+								"1",
+								"miembros"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "miembro",
+			"item": [
+				{
+					"name": "newMiembro",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{IdToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuario_id\": 9,\r\n  \"junta_id\": 1,\r\n  \"cargo\": \"Presidente\",\r\n  \"fecha_inicio\": \"2025-06-15T00:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/miembro-junta",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"miembro-junta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMiembros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/miembros/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"miembros",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMiembro",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/miembro-junta",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"miembro-junta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editMiembro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "agendas",
+			"item": [
+				{
+					"name": "getAgendas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/agendas",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"agendas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAgendaById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{IdToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/agendas/6",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"agendas",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "newAgenda",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{IdToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numero\": \"002\",\r\n  \"tipo\": \"Ordinaria\",\r\n  \"fechaHora\": \"2025-12-12  10:00:00.000\",\r\n  \"lugar\": \"Casa verde\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/agendas",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"agendas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "api is up",
 			"request": {
@@ -21,201 +558,6 @@
 					],
 					"path": [
 						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
-							"  pm.response.to.have.status(201);\r",
-							"  let response = pm.response.json()\r",
-							"  // Stores the tokens in collection variables not environment nor global variable\r",
-							"  pm.collectionVariables.set(\"IdToken\", response?.idToken)\r",
-							"  pm.collectionVariables.set(\"RefreshToken\", response?.refreshToken)\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"usuario\": \"andres@gmail.com\",\r\n  \"contrasena\": \"andres\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URL}}/auth/login",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth register",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"usuario\": \"Dayana Xie\",\r\n    \"correo\": \"andres@gmail.com\",\r\n    \"telefono\": \"2560 6699\",\r\n    \"contrasena\": \"dayana\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URL}}/auth/register",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"auth",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "auth",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {\r",
-							"  pm.response.to.have.status(201);\r",
-							"  let response = pm.response.json()\r",
-							"  // Stores the tokens in collection variables not environment nor global variable\r",
-							"  pm.collectionVariables.set(\"IdToken\", response?.idToken)\r",
-							"  pm.collectionVariables.set(\"RefreshToken\", response?.refreshToken)\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{IdToken}}",
-						"type": "text"
-					},
-					{
-						"key": "x-refresh-token",
-						"value": "{{RefreshToken}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URL}}/auth",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"auth"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "usuarios",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{IdToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL}}/usuarios",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"usuarios"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "junta",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{IdToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL}}/junta",
-					"host": [
-						"{{URL}}"
-					],
-					"path": [
-						"junta"
 					]
 				}
 			},
@@ -251,20 +593,14 @@
 			"type": "string"
 		},
 		{
-			"key": "prod_url",
+			"key": "Prod_URL",
 			"value": "https://agendatec-backend-371160271556.us-central1.run.app",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"key": "dev_url",
+			"key": "Dev_URL",
 			"value": "http://localhost:3000",
-			"type": "string",
-			"disabled": true
-		},
-		{
-			"key": "puerto",
-			"value": "3000",
 			"type": "string",
 			"disabled": true
 		},

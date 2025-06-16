@@ -1,8 +1,8 @@
-import { Controller, Get, Param, UsePipes, ValidationPipe, HttpStatus, Post, Body } from '@nestjs/common';
+import {Controller, Get, Param, UsePipes, ValidationPipe, HttpStatus, Post, Body, UseGuards} from '@nestjs/common';
 import { AgendasService } from './agendas.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { AgendasResponseDto } from './dto/agendas-response.dto';
-import { get } from 'http';
+import { FirebaseAuthGuard } from '../auth/firebase-auth.guard';
 
 @Controller('agendas')
 export class AgendasController {
@@ -16,6 +16,7 @@ export class AgendasController {
     }
 
     @Get()
+    @UseGuards(FirebaseAuthGuard)
     @UsePipes(new ValidationPipe({ transform: true }))
     @ApiResponse({ status: HttpStatus.OK, type: [AgendasResponseDto] })
     async getAgendas(): Promise<AgendasResponseDto[]> {
