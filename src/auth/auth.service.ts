@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { LoginUserDto } from "./dto/login-user.dto";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import * as firebaseAdmin from 'firebase-admin';
@@ -119,6 +119,37 @@ export class AuthService {
                     details: error.code || null
                 }
             }
+        }
+    }
+
+    async validateTokens(idToken: string, refreshToken: string) {
+        try {
+            // Verificar el idToken con Firebase Admin
+            const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
+            if (decodedToken?.uid) {
+                console.log('idToken válido!');
+                return {
+                    statusCode: HttpStatus.OK
+                };
+            }
+        } catch (error) {
+            console.error('idToken inválido:', error.message);
+
+            // Si el idToken es inválido, usar el refreshToken para obtener un nuevo idToken
+            const url = `https://securetoken.googleapis.com/v1/token?key=${process.env.FIREBASE_API_KEY}`;
+            const response = await axios.post(url, {
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+            });
+
+            if (response.data && response.data.id_token) {
+                return { valid: true, idToken: response.data.id_token };
+            }
+
+            return {
+                statusCode: HttpStatus.FOUND,
+                url: '/login',
+            };
         }
     }
 }

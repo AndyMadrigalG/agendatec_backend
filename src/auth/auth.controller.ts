@@ -1,4 +1,4 @@
-import { Controller, Post, HttpStatus, UsePipes, ValidationPipe, Body } from '@nestjs/common';
+import { Controller, Post, HttpStatus, UsePipes, ValidationPipe, Body, Get, Headers } from '@nestjs/common';
 import { AuthService } from "./auth.service";
 import { ApiResponse } from '@nestjs/swagger';
 import { RegisterUserDto } from "./dto/register-user.dto";
@@ -28,5 +28,18 @@ export class AuthController {
     })
     registerUser(@Body() registerUserDTo: RegisterUserDto) {
         return this.authService.registerUser(registerUserDTo);
+    }
+
+    @Get()
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Busca los tokens de auth del usuario'
+    })
+    async authorizeUser(@Headers('Authorization') authHeader: string, @Headers('x-refresh-token') refreshToken: string){
+        const idToken = authHeader?.split(' ')[1]; // Extraer el idToken del encabezado
+        if (!idToken && !refreshToken) {
+            return { valid: false, message: 'Tokens no encontrados' };
+        }
+        return this.authService.validateTokens(idToken,refreshToken);
     }
 }
