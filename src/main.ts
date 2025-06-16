@@ -57,6 +57,6 @@ async function bootstrap() {
   }
   console.log("la database url: "+process.env.DATABASE_URL);
   console.log(" la firebase api: "+process.env.FIREBASE_API_KEY);
-  await app.listen(process.env.BACKEND_PORT ?? 3000);
+  await app.listen(process.env.BACKEND_PORT ?? 8080);
 }
 bootstrap();
