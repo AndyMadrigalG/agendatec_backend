@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { JuntaService } from './junta.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { JuntaDto } from './dto/junta.dto';
@@ -18,8 +18,19 @@ export class JuntaController {
     }
 
     @Get()
-    @ApiResponse({ status: 200, description: 'Lista de juntas' })
+    @ApiResponse({ status: HttpStatus.OK, description: 'Lista de juntas' })
     getJuntas() {
         return this.juntaService.getJuntas();
+    }
+
+
+    @Get(':id/miembros')
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Obtener miembros asociados a la junta por ID',
+    })
+    @UsePipes(new ValidationPipe({ transform: true }))
+    getMiembrosByJuntaId(@Param('id') id: number) {
+        return this.juntaService.getMiembrosByJuntaId(id);
     }
 }
