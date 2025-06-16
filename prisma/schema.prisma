@@ -9,46 +9,46 @@ datasource db {
 }
 
 model Usuario {
-  id_Usuario       Int                @id @default(autoincrement())
-  nombre           String
-  email            String             @unique
-  telefono         String
-  
-  Miembro_De_Junta Miembro_De_Junta[]
+  id_Usuario Int    @id @default(autoincrement())
+  nombre     String
+  email      String @unique
+  telefono   String
+
+  Miembro_De_Junta   Miembro_De_Junta[]
   miembrosConvocados miembrosConvocados[]
-  Punto Punto[] @relation("UsuarioExpositor")
+  Punto              Punto[]              @relation("UsuarioExpositor")
 }
 
 model Agenda {
-  id_Agenda Int         @id @default(autoincrement())
+  id_Agenda Int      @id @default(autoincrement())
   numero    String
-  tipo      String 
+  tipo      String
   fechaHora DateTime
   lugar     String
 
   miembrosConvocados miembrosConvocados[]
-  puntos    Punto[]
+  puntos             Punto[]
 }
 
 model miembrosConvocados {
   id_miembrosConvocados Int @id @default(autoincrement())
-  id_Agenda   Int
-  id_Convocado Int
+  id_Agenda             Int
+  id_Convocado          Int
 
-  Agenda     Agenda   @relation(fields: [id_Agenda], references: [id_Agenda])
+  Agenda    Agenda  @relation(fields: [id_Agenda], references: [id_Agenda])
   Convocado Usuario @relation(fields: [id_Convocado], references: [id_Usuario])
 }
 
 model Punto {
-  id_Punto    Int       @id @default(autoincrement())
+  id_Punto    Int     @id @default(autoincrement())
   expositorId Int
   tipo        String
   duracionMin Int
   archivos    String
   titulo      String
   agendaId    Int
-  agenda      Agenda    @relation(fields: [agendaId], references: [id_Agenda])
-  expositor   Usuario   @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
+  agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda])
+  expositor   Usuario @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
 
   @@index([agendaId], map: "Punto_agendaId_fkey")
   @@index([expositorId], map: "Punto_expositorId_fkey")
