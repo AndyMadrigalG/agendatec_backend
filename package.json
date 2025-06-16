@@ -6,7 +6,10 @@
   "author": "",
   "private": true,
   "scripts": {
-    "generate": "npx prisma generate",
+    "prsima:valid": "npx prisma format && npx prisma validate",
+    "prisma:pull": "npx prisma db pull",
+    "prisma:push": "npx prisma db push",
+    "prisma:generate": "npx prisma generate",
     "up": "nest build && nest start",
     "build": "nest build",
     "start": "nest start",
