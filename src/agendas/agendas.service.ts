@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { AgendasResponseDto } from './dto/agendas-response.dto';
 import prisma from '../prisma.service';
+import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 
 @Injectable()
 export class AgendasService {
   async postAgenda(agenda: AgendasResponseDto): Promise<AgendasResponseDto> {
-    // Crear la agenda en la base de datos
     const createdAgenda = await prisma.agenda.create({
       data: {
         numero: agenda.numero,
@@ -15,7 +15,6 @@ export class AgendasService {
       },
     });
 
-    // Retornar la agenda creada
     return {
       id_Agenda: createdAgenda.id_Agenda,
       numero: createdAgenda.numero,
