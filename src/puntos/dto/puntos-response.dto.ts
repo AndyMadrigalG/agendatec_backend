@@ -28,18 +28,25 @@ export class PuntoResponseDto {
   @IsNumber()
   duracionMin!: number;
 
-  @ApiProperty({ description: "Attatched files (URLs) JSON o CSV)", required: false })
+  @ApiProperty({ description: "Point's statement" })
+  @IsOptional()
+  @IsString()
+  enunciado: string;
+
+  @ApiProperty({ description: "Attatched files (URLs) JSON o CSV)"})
   @IsOptional()
   @IsString()
   archivos: string;
 
-  @ApiProperty({ description: "Point's title" })
+  @ApiProperty({ description: "Point's content" })
   @IsNotEmpty()
   @IsString()
-  titulo: string;
+  contenido: string;
 
   @ApiProperty({ description: "Belonging agenda's ID" })
   @IsNotEmpty()
   @IsNumber()
   agendaId: number;
+
+  votacion: { id_Punto: number; votos_a_Favor: number; votos_en_Contra: number; votos_Abstencion: number; acuerdo: string; };
 }
