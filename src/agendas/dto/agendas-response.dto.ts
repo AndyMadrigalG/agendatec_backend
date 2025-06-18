@@ -9,7 +9,6 @@ import {
   IsDate,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 
 export class AgendasResponseDto {
   @ApiProperty({ description: "The agenda's id" })

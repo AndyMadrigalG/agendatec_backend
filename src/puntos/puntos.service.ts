@@ -69,6 +69,10 @@ export class PuntosService {
         },
       });
 
+      if (!puntos || puntos.length === 0) {
+        return [];
+      }
+
       return puntos.map(punto => {
         const puntoResponse: any = { 
           id_Punto: punto.id_Punto,
@@ -164,5 +168,9 @@ export class PuntosService {
         ...votacion,
       },
     });
+  }
+
+  getVotaciones(){
+    return prisma.votacion.findMany();
   }
 }
