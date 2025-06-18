@@ -101,4 +101,60 @@ export class AgendasService {
     }
   }
 
+  getConvocadosByAgendaId(agendaId: number): any {
+    try {
+      const convocados =  prisma.miembrosConvocados.findMany({
+        where: { id_Agenda: agendaId },
+        include: {
+          Convocado: {
+            select: {
+              nombre: true,
+              email: true,
+              telefono: true,
+            },
+          },
+        },
+      });
+
+      if (!convocados) {
+        return [];
+      }
+
+      return convocados;
+
+    } catch (error) {
+      console.error('Error fetching convocados by agenda ID:', error);
+      throw new Error('Could not fetch convocados by agenda ID');
+    }
+  }
+
+  postConvocados (agendaId: number, convocados: any[]): Promise<any> {
+    try {
+      return prisma.miembrosConvocados.createMany({
+        data: convocados.map(convocado => ({
+          id_Agenda: agendaId,
+          id_Convocado: convocado.id_Convocado,
+        })),
+      });
+    } catch (error) {
+      console.error('Error posting convocados:', error);
+      throw new Error('Could not post convocados');
+    }
+  }
+
+
+  async deleteAgenda(id: number): Promise<boolean> {
+    try {
+      const deletedAgenda = await prisma.agenda.delete({
+        where: { id_Agenda: id },
+      });
+
+      return !!deletedAgenda;
+
+    } catch (error) {
+      console.error('Error deleting agenda:', error);
+      throw new Error('Could not delete agenda');
+    }
+  }
+
 }

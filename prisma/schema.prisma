@@ -35,8 +35,8 @@ model miembrosConvocados {
   id_Agenda             Int
   id_Convocado          Int
 
-  Agenda    Agenda  @relation(fields: [id_Agenda], references: [id_Agenda])
-  Convocado Usuario @relation(fields: [id_Convocado], references: [id_Usuario])
+  Agenda    Agenda  @relation(fields: [id_Agenda], references: [id_Agenda], onDelete: Cascade)
+  Convocado Usuario @relation(fields: [id_Convocado], references: [id_Usuario], onDelete: Cascade)
 }
 
 
@@ -51,8 +51,8 @@ model Punto {
   archivos    String
   contenido   String
   agendaId    Int
-  agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda])
-  expositor   Usuario @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
+  agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda], onDelete: Cascade)
+  expositor   Usuario @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario], onDelete: Cascade)
 
   @@index([agendaId], map: "Punto_agendaId_fkey")
   @@index([expositorId], map: "Punto_expositorId_fkey")
@@ -62,7 +62,7 @@ model Punto {
 
 model Votacion {
   id_Punto    Int @id
-  punto      Punto @relation(fields: [id_Punto], references: [id_Punto])
+  punto      Punto @relation(fields: [id_Punto], references: [id_Punto], onDelete: Cascade)
   votos_a_Favor Int
   votos_en_Contra Int
   votos_Abstencion Int
@@ -76,8 +76,8 @@ model Miembro_De_Junta {
   fecha_fin           DateTime?
   junta_id            Int
   id_Miembro_De_Junta Int       @id @default(autoincrement())
-  junta               Junta     @relation(fields: [junta_id], references: [id_Junta])
-  usuario             Usuario   @relation(fields: [usuario_id], references: [id_Usuario])
+  junta               Junta     @relation(fields: [junta_id], references: [id_Junta], onDelete: Cascade)
+  usuario             Usuario   @relation(fields: [usuario_id], references: [id_Usuario], onDelete: Cascade)
 
   @@index([junta_id], map: "Miembro_De_Junta_junta_id_fkey")
   @@index([usuario_id], map: "Miembro_De_Junta_usuario_id_fkey")
