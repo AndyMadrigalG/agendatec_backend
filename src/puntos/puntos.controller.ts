@@ -5,7 +5,7 @@ import { ApiResponse } from '@nestjs/swagger';
 import { PuntoResponseDto } from './dto/puntos-response.dto';
 import { VotacionResponseDto } from './dto/votacion-response.dto';
 
-
+    
 
 @Controller('puntos')
 export class PuntosController {
