@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import prisma from 'src/prisma.service';
 import { PuntoResponseDto } from './dto/puntos-response.dto';
+import prisma from 'src/prisma.service';
 import { VotacionResponseDto } from './dto/votacion-response.dto';
 
 @Injectable()
