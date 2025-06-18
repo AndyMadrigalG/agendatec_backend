@@ -8,10 +8,15 @@ import {
 
 
 export class PuntoResponseDto {
-  @ApiProperty({ description: "Point's ID" })
-  @IsNotEmpty()
+  @ApiProperty({ description: "Point's ID" })	  @ApiProperty({ description: "Point's ID" })
   @IsNumber()
+  @IsOptional()
   id_Punto: number;
+
+  @ApiProperty({ description: "Point's number" })
+  @IsNotEmpty()	  @IsNotEmpty()
+  @IsNumber()	  @IsNumber()
+  numeracion: number;
 
   @ApiProperty({ description: "Speaker's ID" })
   @IsNotEmpty()
@@ -26,7 +31,7 @@ export class PuntoResponseDto {
   @ApiProperty({ description: "Estimated duration in mins" })
   @IsNotEmpty()
   @IsNumber()
-  duracionMin!: number;
+  duracionMin: number;
 
   @ApiProperty({ description: "Point's statement" })
   @IsOptional()
@@ -47,6 +52,5 @@ export class PuntoResponseDto {
   @IsNotEmpty()
   @IsNumber()
   agendaId: number;
-
   votacion: { id_Punto: number; votos_a_Favor: number; votos_en_Contra: number; votos_Abstencion: number; acuerdo: string; };
 }
