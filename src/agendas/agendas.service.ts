@@ -68,28 +68,33 @@ export class AgendasService {
       const puntos = await prisma.punto.findMany({
         where: { agendaId: agendaId },
         include: {
-          Punto_Aprobacion: true,
-          Punto_Informativo: true,
-          Punto_Estrategia: true,
-          Punto_Varios: true,
-        },
+          Votacion: true,
+        }
       });
 
-      return puntos.map(punto => ({
-        id_Punto: punto.id_Punto,
-        numeracion: punto.numeracion,
-        expositorId: punto.expositorId,
-        tipo: punto.tipo,
-        duracionMin: punto.duracionMin,
-        cuerpo: punto.cuerpo,
-        archivos: punto.archivos,
-        enunciado: punto.enunciado,
-        agendaId: punto.agendaId,
-        Punto_Aprobacion: punto.Punto_Aprobacion,
-        Punto_Informativo: punto.Punto_Informativo,
-        Punto_Estrategia: punto.Punto_Estrategia,
-        Punto_Propuesta: punto.Punto_Varios,
-      }));
+      return puntos.map(punto => {
+        const puntoResponse: any = { 
+          id_Punto: punto.id_Punto,
+          expositorId: punto.expositorId,
+          numeracion: punto.numeracion,
+          tipo: punto.tipo,
+          duracionMin: punto.duracionMin,
+          enunciado: punto.enunciado,
+          archivos: punto.archivos,
+          contenido: punto.contenido,
+          agendaId: punto.agendaId,
+        };
+
+        if (punto.Votacion) {
+          puntoResponse.votacion = {
+            votos_a_Favor: punto.Votacion.votos_a_Favor,
+            votos_en_Contra: punto.Votacion.votos_en_Contra,
+            votos_Abstencion: punto.Votacion.votos_Abstencion,
+            acuerdo: punto.Votacion.acuerdo,
+          };
+        }
+        return puntoResponse;
+      });
     } catch (error) {
       console.error('Error fetching puntos by agenda ID:', error);
       throw new Error('Could not fetch puntos by agenda ID');
