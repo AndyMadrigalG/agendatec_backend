@@ -11,22 +11,24 @@ export class PuntosController {
     constructor(private puntosService: PuntosService) {}
 
     @Get()
-    @ApiResponse({ status: 200, description: 'Lista de puntos' })
-    getUsuarios() {
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({ status: HttpStatus.OK, description: 'Lista de puntos' })
+    async getPuntos(): Promise<PuntoResponseDto[]> {
         return this.puntosService.getPuntos();
     }
-    
 
-    @Post(':id/votacion')
+    @Post()
     @UsePipes(new ValidationPipe({ transform: true }))
-    async postVotacion(@Param('id') id_Punto: number): Promise<VotacionResponseDto> {
-        return this.puntosService.postVotacion(id_Punto);
+    @ApiResponse({ status: HttpStatus.OK, description: 'Punto creado exitosamente' })
+    async postPunto(@Body() punto: PuntoResponseDto): Promise<PuntoResponseDto> {
+        return this.puntosService.postPunto(punto);
     }
 
-    @Patch(':id')
+    @Delete(':id')
     @UsePipes(new ValidationPipe({ transform: true }))
-    async editPunto(@Param('id') id: number, @Body() punto: any): Promise<any> {
-        return this.puntosService.editPunto(id, punto);
+    @ApiResponse({ status: HttpStatus.OK, description: 'Punto eliminado exitosamente' })
+    async deletePunto(@Param('id') id: number): Promise<boolean> {
+        return this.puntosService.deletePunto(id);
     }
 
     @Patch(':id/votacion')
