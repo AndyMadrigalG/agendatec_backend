@@ -4,7 +4,8 @@ import { Get } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { PuntoResponseDto } from './dto/puntos-response.dto';
 import { VotacionResponseDto } from './dto/votacion-response.dto';
-    
+
+
 
 @Controller('puntos')
 export class PuntosController {
@@ -29,6 +30,18 @@ export class PuntosController {
     @ApiResponse({ status: HttpStatus.OK, description: 'Punto eliminado exitosamente' })
     async deletePunto(@Param('id') id: number): Promise<boolean> {
         return this.puntosService.deletePunto(id);
+    }
+
+    @Post(':id/votacion')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    async postVotacion(@Param('id') id_Punto: number): Promise<VotacionResponseDto> {
+        return this.puntosService.postVotacion(id_Punto);
+    }
+
+    @Patch(':id')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    async editPunto(@Param('id') id: number, @Body() punto: any): Promise<any> {
+        return this.puntosService.editPunto(id, punto);
     }
 
     @Patch(':id/votacion')

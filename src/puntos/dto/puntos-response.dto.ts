@@ -8,14 +8,14 @@ import {
 
 
 export class PuntoResponseDto {
-  @ApiProperty({ description: "Point's ID" })	  @ApiProperty({ description: "Point's ID" })
+  @ApiProperty({ description: "Point's ID" })
   @IsNumber()
   @IsOptional()
   id_Punto: number;
 
   @ApiProperty({ description: "Point's number" })
-  @IsNotEmpty()	  @IsNotEmpty()
-  @IsNumber()	  @IsNumber()
+  @IsNotEmpty()
+  @IsNumber()
   numeracion: number;
 
   @ApiProperty({ description: "Speaker's ID" })
