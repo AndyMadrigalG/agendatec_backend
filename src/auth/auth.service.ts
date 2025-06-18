@@ -36,7 +36,7 @@ export class AuthService {
         try {
             const response = await this.signInWithEmailAndPassword(usuario, contrasena);
             let output = {};
-            if( response && response.idToken) {
+            if( response.idToken && response.refreshToken && response.expiresIn && response.displayName && response.email) {
                 // TO-DO: create a user dto to return the user data
                 output = {
                     username: response.displayName,
@@ -45,11 +45,10 @@ export class AuthService {
                     refreshToken: response.refreshToken,
                     expiresIn: response.expiresIn,
                 };
-            }
-            else if (response === undefined) {
+            } else {
                 output = {
                     error: {
-                        message: 'Correo electrónico o contraseña inválidos',
+                        message: 'Error en login',
                         code: 400
                     }
                 }
