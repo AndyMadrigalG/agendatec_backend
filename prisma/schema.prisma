@@ -39,55 +39,19 @@ model miembrosConvocados {
   Convocado Usuario @relation(fields: [id_Convocado], references: [id_Usuario])
 }
 
-
-
 model Punto {
   id_Punto    Int     @id @default(autoincrement())
-  numeracion  Int
   expositorId Int
   tipo        String
   duracionMin Int
-  cuerpo      String
   archivos    String
-  enunciado   String
+  titulo      String
   agendaId    Int
   agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda])
   expositor   Usuario @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario])
 
   @@index([agendaId], map: "Punto_agendaId_fkey")
   @@index([expositorId], map: "Punto_expositorId_fkey")
-
-  Punto_Informativo Punto_Informativo?
-  Punto_Aprobacion Punto_Aprobacion?
-  Punto_Estrategia Punto_Estrategia?
-  Punto_Varios Punto_Varios?
-}
-
-model Punto_Aprobacion {
-  id_Punto Int @id
-  punto Punto @relation(fields: [id_Punto], references: [id_Punto])
-  votos_a_Favor Int
-  votos_en_Contra Int
-  votos_Abstencion Int
-  acuerdo String
-}
-
-model Punto_Informativo {
-  id_Punto Int @id
-  punto Punto @relation(fields: [id_Punto], references: [id_Punto])
-  detalles String
-}
-
-model Punto_Estrategia {
-  id_Punto Int @id
-  punto Punto @relation(fields: [id_Punto], references: [id_Punto])
-  consideraciones String
-}
-
-model Punto_Varios {
-  id_Punto Int @id
-  punto Punto @relation(fields: [id_Punto], references: [id_Punto])
-  propuesta String
 }
 
 model Miembro_De_Junta {

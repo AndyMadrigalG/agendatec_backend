@@ -1,174 +1,68 @@
 import { Injectable } from '@nestjs/common';
-import { PuntoAprobacionResponseDto, PuntoEstrategiaResponseDto, PuntoInformacionResponseDto, PuntoResponseDto, PuntoVariosResponseDto } from './dto/puntos-response.dto';
-import prisma from 'src/prisma.service';
+import { PuntoResponseDto } from './dto/puntos-response.dto';
 
 @Injectable()
 export class PuntosService {
-
-  private tipoPuntoHandlers = {
-    aprobacion: async (id_Punto: number) =>
-      prisma.punto_Aprobacion.create({
-        data: {
-          id_Punto,
-          votos_a_Favor: 0,
-          votos_en_Contra: 0,
-          votos_Abstencion: 0,
-          acuerdo: '',
-        },
-      }),
-    informativo: async (id_Punto: number) =>
-      prisma.punto_Informativo.create({
-        data: {
-          id_Punto,
-          detalles: '',
-        },
-      }),
-    estrategia: async (id_Punto: number) =>
-      prisma.punto_Estrategia.create({
-        data: {
-          id_Punto,
-          consideraciones: '',
-        },
-      }),
-    varios: async (id_Punto: number) =>
-      prisma.punto_Varios.create({
-        data: {
-          id_Punto,
-          propuesta: '',
-        },
-      }),
-  };
-
-  async deletePunto(id: number): Promise<boolean> {
-    try {
-      await prisma.punto_Aprobacion.deleteMany({ where: { id_Punto: id } });
-      await prisma.punto_Informativo.deleteMany({ where: { id_Punto: id } });
-      await prisma.punto_Estrategia.deleteMany({ where: { id_Punto: id } });
-      await prisma.punto_Varios.deleteMany({ where: { id_Punto: id }   });
-
-      const punto = await prisma.punto.delete({
-        where: { id_Punto: id },
-        include: {
-          Punto_Aprobacion: true,
-          Punto_Informativo: true,
-          Punto_Estrategia: true,
-          Punto_Varios: true,
-        },
-      });
-      return !!punto;
-
-    } catch (error) {
-      console.error('Error deleting punto:', error);
-      throw new Error('Could not delete punto');
-    }
-  }
-
-  async getPuntoById(id: number): Promise<any> {
-    try {
-      const punto = await prisma.punto.findUnique({
-        where: { id_Punto: id },
-        include: {
-          Punto_Aprobacion: true,
-          Punto_Informativo: true,
-          Punto_Estrategia: true,
-          Punto_Varios: true,
-        },
-      });
-
-      if (!punto) {
-        throw new Error('Punto not found');
-      }
-
-      return {
-        id_Punto: punto.id_Punto,
-        numeracion: punto.numeracion,
-        expositorId: punto.expositorId,
-        tipo: punto.tipo,
-        duracionMin: punto.duracionMin,
-        cuerpo: punto.cuerpo,
-        archivos: punto.archivos,
-        enunciado: punto.enunciado,
-        agendaId: punto.agendaId,
-        Punto_Aprobacion: punto.Punto_Aprobacion,
-        Punto_Informativo: punto.Punto_Informativo,
-        Punto_Estrategia: punto.Punto_Estrategia,
-        Punto_Varios: punto.Punto_Varios,
-      };
-    } catch (error) {
-      console.error('Error fetching punto by ID:', error);
-      throw new Error('Could not fetch punto by ID');
-    }
-  }
+  private readonly puntos: PuntoResponseDto[] = [
+    {
+      id_Punto: 1,
+      expositorId: 2,
+      tipo: "Informativo",
+      duracionMin: 30,
+      archivos: "undefined",
+      titulo: 'Aprobación del acta anterior',
+      agendaId: 1,
+    },
+    {
+      id_Punto: 2,
+      expositorId: 3,
+      tipo: "Estrategia",
+      duracionMin: 45,
+      archivos: '["https://example.com/doc.pdf"]',
+      titulo: 'Revisión del presupuesto',
+      agendaId: 1,
+    },
+    {
+      id_Punto: 3,
+      expositorId: 2,
+      tipo: "Aprobacion",
+      duracionMin: 60,
+      archivos: "undefined",
+      titulo: 'Decisión sobre nuevos proyectos',
+      agendaId: 2,
+    },
+  ];
 
   async getPuntos(): Promise<PuntoResponseDto[]> {
-    try {
-      const puntos = await prisma.punto.findMany({
-        include: {
-          Punto_Aprobacion: true,
-          Punto_Informativo: true,
-          Punto_Estrategia: true,
-          Punto_Varios: true,
-        },
-      });
-
-      return puntos.map(punto => ({
-        id_Punto: punto.id_Punto,
-        numeracion: punto.numeracion,
-        expositorId: punto.expositorId,
-        tipo: punto.tipo,
-        duracionMin: punto.duracionMin,
-        cuerpo: punto.cuerpo,
-        archivos: punto.archivos,
-        enunciado: punto.enunciado,
-        agendaId: punto.agendaId,
-        Punto_Aprobacion: punto.Punto_Aprobacion,
-        Punto_Informativo: punto.Punto_Informativo,
-        Punto_Estrategia: punto.Punto_Estrategia,
-        Punto_Varios: punto.Punto_Varios,
-      }));
-    } catch (error) {
-      console.error('Error fetching puntos:', error);
-      throw new Error('Could not fetch puntos');
-    }
+    return this.puntos;
   }
 
-  async postPunto(punto: PuntoResponseDto): Promise<any> {
-    try {
-      const createdPunto = await prisma.punto.create({
-        data: {
-          expositorId: punto.expositorId,
-          numeracion: punto.numeracion,
-          tipo: punto.tipo,
-          duracionMin: punto.duracionMin,
-          cuerpo: punto.cuerpo ?? undefined,
-          archivos: punto.archivos,
-          enunciado: punto.enunciado,
-          agendaId: punto.agendaId,
-        },
-      });
+  async getPuntosByAgenda(agendaId: number): Promise<PuntoResponseDto[]> {
+    return this.puntos.filter(p => p.agendaId === agendaId);
+  }
 
-      const handler = this.tipoPuntoHandlers[createdPunto.tipo];
-      if (!handler) {
-        throw new Error(`Tipo de punto inválido: ${createdPunto.tipo}`);
-      }
+  async getPuntoById(id: number): Promise<PuntoResponseDto | undefined> {
+    return this.puntos.find(p => p.id_Punto === id);
+  }
 
-      const tipoPunto = await handler(createdPunto.id_Punto);
+  async createPunto(data: Omit<PuntoResponseDto, 'id_Punto'>): Promise<PuntoResponseDto> {
+    const nextId = Math.max(...this.puntos.map(p => p.id_Punto), 0) + 1;
+    const newPoint: PuntoResponseDto = { id_Punto: nextId, ...data };
+    this.puntos.push(newPoint);
+    return newPoint;
+  }
 
-      return {
-        id_Punto: createdPunto.id_Punto,
-        numeracion: createdPunto.numeracion,
-        expositorId: createdPunto.expositorId,
-        tipo: createdPunto.tipo,
-        duracionMin: createdPunto.duracionMin,
-        cuerpo: createdPunto.cuerpo,
-        archivos: createdPunto.archivos,
-        enunciado: createdPunto.enunciado,
-        agendaId: createdPunto.agendaId,
-        tipoPunto: tipoPunto,
-      };
-    } catch (error) {
-      console.error('Error creating punto:', error);
-      throw new Error('Could not create punto');
-    }
+  async updatePunto(id: number, data: Partial<Omit<PuntoResponseDto, 'id_Punto' | 'agendaId'>>): Promise<PuntoResponseDto | undefined> {
+    const index = this.puntos.findIndex(p => p.id_Punto === id);
+    if (index === -1) return undefined;
+    this.puntos[index] = { ...this.puntos[index], ...data };
+    return this.puntos[index];
+  }
+
+  async deletePunto(id: number): Promise<boolean> {
+    const index = this.puntos.findIndex(p => p.id_Punto === id);
+    if (index === -1) return false;
+    this.puntos.splice(index, 1);
+    return true;
   }
 }

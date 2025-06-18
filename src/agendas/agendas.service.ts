@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { AgendasResponseDto } from './dto/agendas-response.dto';
 import prisma from '../prisma.service';
-import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 
 @Injectable()
 export class AgendasService {
   async postAgenda(agenda: AgendasResponseDto): Promise<AgendasResponseDto> {
+    // Crear la agenda en la base de datos
     const createdAgenda = await prisma.agenda.create({
       data: {
         numero: agenda.numero,
@@ -15,6 +15,7 @@ export class AgendasService {
       },
     });
 
+    // Retornar la agenda creada
     return {
       id_Agenda: createdAgenda.id_Agenda,
       numero: createdAgenda.numero,
@@ -60,39 +61,6 @@ export class AgendasService {
     } catch (error) {
       console.error('Error fetching agenda by ID:', error);
       throw new Error('Could not fetch agenda by ID');
-    }
-  }
-
-  async getPuntosByAgendaId(agendaId: number): Promise<PuntoResponseDto[]> {
-    try {
-      const puntos = await prisma.punto.findMany({
-        where: { agendaId: agendaId },
-        include: {
-          Punto_Aprobacion: true,
-          Punto_Informativo: true,
-          Punto_Estrategia: true,
-          Punto_Varios: true,
-        },
-      });
-
-      return puntos.map(punto => ({
-        id_Punto: punto.id_Punto,
-        numeracion: punto.numeracion,
-        expositorId: punto.expositorId,
-        tipo: punto.tipo,
-        duracionMin: punto.duracionMin,
-        cuerpo: punto.cuerpo,
-        archivos: punto.archivos,
-        enunciado: punto.enunciado,
-        agendaId: punto.agendaId,
-        Punto_Aprobacion: punto.Punto_Aprobacion,
-        Punto_Informativo: punto.Punto_Informativo,
-        Punto_Estrategia: punto.Punto_Estrategia,
-        Punto_Propuesta: punto.Punto_Varios,
-      }));
-    } catch (error) {
-      console.error('Error fetching puntos by agenda ID:', error);
-      throw new Error('Could not fetch puntos by agenda ID');
     }
   }
 
