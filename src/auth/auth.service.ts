@@ -48,7 +48,7 @@ export class AuthService {
             } else {
                 output = {
                     error: {
-                        message: 'Error en login',
+                        message: 'Correo electrónico o contraseña inválidos',
                         code: 400
                     }
                 }
