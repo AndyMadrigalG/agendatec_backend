@@ -45,7 +45,7 @@ export class PuntoResponseDto {
   archivos: string;
 
   @ApiProperty({ description: "Point's content" })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   contenido: string;
 

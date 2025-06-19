@@ -6,24 +6,29 @@ import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 @Injectable()
 export class AgendasService {
   async postAgenda(agenda: AgendasResponseDto): Promise<AgendasResponseDto> {
-    const createdAgenda = await prisma.agenda.create({
-      data: {
-        numero: agenda.numero,
-        tipo: agenda.tipo,
-        fechaHora: agenda.fechaHora,
-        lugar: agenda.lugar,
-      },
-    });
+    try{
+      const createdAgenda = await prisma.agenda.create({
+        data: {
+          numero: agenda.numero,
+          tipo: agenda.tipo,
+          fechaHora: agenda.fechaHora,
+          lugar: agenda.lugar,
+        },
+      });
 
-    return {
-      id_Agenda: createdAgenda.id_Agenda,
-      numero: createdAgenda.numero,
-      tipo: createdAgenda.tipo,
-      fechaHora: createdAgenda.fechaHora,
-      lugar: createdAgenda.lugar,
-    };
+      return {
+        id_Agenda: createdAgenda.id_Agenda,
+        numero: createdAgenda.numero,
+        tipo: createdAgenda.tipo,
+        fechaHora: createdAgenda.fechaHora,
+        lugar: createdAgenda.lugar,
+      };
+    } catch (error) {
+      console.error('Error creating agenda:', error);
+      throw new Error('Could not create agenda');
+    }
   }
-
+  
   async getAgendas(): Promise<AgendasResponseDto[]> {
     try {
       const agendas = await prisma.agenda.findMany();
