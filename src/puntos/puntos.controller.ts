@@ -54,5 +54,12 @@ export class PuntosController {
     async getVotaciones(): Promise<VotacionResponseDto[]> {
         return this.puntosService.getVotaciones();
     }
+
+    @Get(':id')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({ status: HttpStatus.OK, description: 'Punto encontrado' })
+    async getPuntoById(@Param('id') id: number): Promise<PuntoResponseDto | undefined> {
+        return this.puntosService.getPuntoById(id);
+    }
     
 }
