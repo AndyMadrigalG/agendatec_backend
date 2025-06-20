@@ -1,9 +1,9 @@
-import { Controller, Get, Param, UsePipes, ValidationPipe, HttpStatus, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Param, UsePipes, ValidationPipe, HttpStatus, Post, Body, UseGuards, Delete } from '@nestjs/common';
 import { AgendasService } from './agendas.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { AgendasResponseDto } from './dto/agendas-response.dto';
-import { get } from 'http';
 import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
+//import { FirebaseAuthGuard } from '../auth/firebase-auth.guard';
 
 @Controller('agendas')
 export class AgendasController {
@@ -11,21 +11,22 @@ export class AgendasController {
 
     @Post()
     @UsePipes(new ValidationPipe({ transform: true }))
-    @ApiResponse({ status: HttpStatus.CREATED,  description: 'Agenda creada exitosamente' })
+    @ApiResponse({ status: HttpStatus.CREATED, type: AgendasResponseDto, description: 'Agenda creada exitosamente' })
     async postAgenda(@Body() agenda: AgendasResponseDto): Promise<AgendasResponseDto> {
         return this.agendasService.postAgenda(agenda);
     }
 
     @Get()
+    //@UseGuards(FirebaseAuthGuard)
     @UsePipes(new ValidationPipe({ transform: true }))
-    @ApiResponse({ status: HttpStatus.OK, description: 'Lista de agendas'})
+    @ApiResponse({ status: HttpStatus.OK, type: [AgendasResponseDto], description: 'Lista de agendas' })
     async getAgendas(): Promise<AgendasResponseDto[]> {
         return this.agendasService.getAgendas();
     }
 
     @Get(':id')
     @UsePipes(new ValidationPipe({ transform: true }))
-    @ApiResponse({ status: HttpStatus.OK, description: 'Agenda encontrada' })
+    @ApiResponse({ status: HttpStatus.OK, type: AgendasResponseDto, description: 'Agenda encontrada' })
     async getAgendaById(@Param('id') id: number): Promise<AgendasResponseDto | undefined> {
         return this.agendasService.getAgendaById(id);
     }
