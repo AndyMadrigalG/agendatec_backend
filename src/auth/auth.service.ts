@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import { LoginUserDto } from "./dto/login-user.dto";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import * as firebaseAdmin from 'firebase-admin';
@@ -36,7 +36,7 @@ export class AuthService {
         try {
             const response = await this.signInWithEmailAndPassword(usuario, contrasena);
             let output = {};
-            if( response.idToken && response.refreshToken && response.expiresIn && response.displayName && response.email) {
+            if( response !== undefined && response.idToken && response.refreshToken && response.expiresIn && response.displayName && response.email) {
                 // TO-DO: create a user dto to return the user data
                 output = {
                     username: response.displayName,
@@ -47,10 +47,8 @@ export class AuthService {
                 };
             } else {
                 output = {
-                    error: {
                         message: 'Correo electrónico o contraseña inválidos',
-                        code: 400
-                    }
+                        code: 400,
                 }
             }
             return output;
