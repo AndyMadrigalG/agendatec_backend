@@ -49,4 +49,10 @@ export class PuntosController {
     async editVotacion(@Param('id') id_Punto: number, @Body() votacion: any): Promise<any> {
         return this.puntosService.editVotacion(id_Punto, votacion);
     }
+
+    @Get('votacion')
+    async getVotaciones(): Promise<VotacionResponseDto[]> {
+        return this.puntosService.getVotaciones();
+    }
+    
 }

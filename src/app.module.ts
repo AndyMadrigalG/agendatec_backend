@@ -27,7 +27,7 @@ import { MiembroJuntaModule } from './miembroJunta/miembroJunta.module';
       AgendasModule,
       PuntosModule,
       JuntaModule,
-      MiembroJuntaModule      
+      MiembroJuntaModule,
   ],
   controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController, MiembroJuntaController],
   providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService, MiembroJuntaService],
