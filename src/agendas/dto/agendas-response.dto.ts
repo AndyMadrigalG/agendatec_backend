@@ -1,14 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsDate,
   IsNotEmpty,
   IsString,
-  IsNumber,
-  IsOptional,
-  IsDateString,
-  IsArray,
-  IsDate,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export class AgendasResponseDto {
   @ApiProperty({ description: "The agenda's id" })
@@ -28,18 +23,15 @@ export class AgendasResponseDto {
 
   @ApiProperty({
     description: "Date and time the session will take place",
-    required: false,
   })
-  @Type(() => Date)
-  @IsOptional()
-  @IsDate()
-  fechaHora: Date;
+  @IsNotEmpty()
+  @IsString()
+  fechaHora: string
 
   @ApiProperty({
-    description: "Session's place (if presencial)",
-    required: false,
+    description: "Session's place",
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   lugar: string;
 
