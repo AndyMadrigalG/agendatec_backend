@@ -7,11 +7,12 @@ import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 export class AgendasService {
   async postAgenda(agenda: AgendasResponseDto): Promise<AgendasResponseDto> {
     try{
+      const datetime = agenda.fechaHora.replace('T',' ')
       const createdAgenda = await prisma.agenda.create({
         data: {
           numero: agenda.numero,
           tipo: agenda.tipo,
-          fechaHora: agenda.fechaHora,
+          fechaHora: new Date(datetime),
           lugar: agenda.lugar,
         },
       });
@@ -20,7 +21,7 @@ export class AgendasService {
         id_Agenda: createdAgenda.id_Agenda,
         numero: createdAgenda.numero,
         tipo: createdAgenda.tipo,
-        fechaHora: createdAgenda.fechaHora,
+        fechaHora: ""+createdAgenda.fechaHora,
         lugar: createdAgenda.lugar,
       };
     } catch (error) {
@@ -37,7 +38,7 @@ export class AgendasService {
         id_Agenda: agenda.id_Agenda,
         numero: agenda.numero,
         tipo: agenda.tipo,
-        fechaHora: agenda.fechaHora,
+        fechaHora: ""+agenda.fechaHora,
         lugar: agenda.lugar,
       }));
 
@@ -59,7 +60,7 @@ export class AgendasService {
         id_Agenda: agenda.id_Agenda,
         numero: agenda.numero,
         tipo: agenda.tipo,
-        fechaHora: agenda.fechaHora,
+        fechaHora: ""+agenda.fechaHora,
         lugar: agenda.lugar,
       };
     } catch (error) {
