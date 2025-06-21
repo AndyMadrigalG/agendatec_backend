@@ -9,20 +9,15 @@ export class FileService {
 
     constructor() {
         this.storage = new Storage({
-            keyFilename: '../../firebase-service-account.json', // Ruta al archivo de credenciales
+            keyFilename: './agendatec-gcp-service-account.json', // Ruta al archivo de credenciales
         });
         this.bucketName = 'agendatec-bucket'; // Nombre del bucket
     }
 
-    async uploadFile(file): Promise<string> {
+    async uploadFile(file) {
         const bucket = this.storage.bucket(this.bucketName);
-        const blob = bucket.file(file.originalname);
-        const blobStream = blob.createWriteStream();
-
-        return new Promise((resolve, reject) => {
-            blobStream.on('error', (err) => reject(err));
-            blobStream.on('finish', () => resolve(`File ${file.originalname} uploaded successfully`));
-            blobStream.end(file.buffer);
-        });
+        //const result = await bucket.upload("C:\\uploadTest\\imagen1.png")
+        //return result;
+        return true
     }
 }
