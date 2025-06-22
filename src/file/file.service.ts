@@ -14,7 +14,7 @@ export class FileService {
         this.bucketName = 'agendatec-bucket'; // Nombre del bucket
     }
 
-    async uploadFile(file) {
+    async uploadFile(file: Express.Multer.File) {
         const bucket = this.storage.bucket(this.bucketName);
         //const result = await bucket.upload("C:\\uploadTest\\imagen1.png")
         //return result;
