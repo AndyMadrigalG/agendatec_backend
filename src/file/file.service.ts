@@ -32,7 +32,7 @@ export class FileService {
             });
 
             blobStream.on('finish', () => {
-                console.log(`File ${file.originalname} uploaded successfully.`);
+                // console.log(`File ${file.originalname} uploaded successfully.`);
                 resolve({
                     message: 'File uploaded successfully',
                     fileName: file.originalname,
