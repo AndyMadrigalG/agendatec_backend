@@ -22,6 +22,7 @@ export class AgendasService {
         numero: createdAgenda.numero,
         tipo: createdAgenda.tipo,
         fechaHora: ""+createdAgenda.fechaHora,
+        fechaFin: createdAgenda.fechaFin ? ""+createdAgenda.fechaFin : null,
         lugar: createdAgenda.lugar,
       };
     } catch (error) {
@@ -32,14 +33,20 @@ export class AgendasService {
   
   async getAgendas(): Promise<AgendasResponseDto[]> {
     try {
-      const agendas = await prisma.agenda.findMany();
+      const agendas = await prisma.agenda.findMany({
+        include: {
+          estado: true, // Incluye el estado de cada agenda
+        },
+      });
 
       return agendas.map(agenda => ({
         id_Agenda: agenda.id_Agenda,
         numero: agenda.numero,
         tipo: agenda.tipo,
         fechaHora: ""+agenda.fechaHora,
+        fechaFin: agenda.fechaFin ? ""+agenda.fechaFin : null,
         lugar: agenda.lugar,
+        estado: agenda.estado.nombre,
       }));
 
     } catch (error) {
@@ -52,6 +59,9 @@ export class AgendasService {
     try {
       const agenda = await prisma.agenda.findUnique({
         where: { id_Agenda: id },
+        include: {
+          estado: true, // Incluye el estado de la agenda
+        },
       });
 
       if (!agenda) return undefined;
@@ -61,7 +71,9 @@ export class AgendasService {
         numero: agenda.numero,
         tipo: agenda.tipo,
         fechaHora: ""+agenda.fechaHora,
+        fechaFin: agenda.fechaFin ? ""+agenda.fechaFin : null,
         lugar: agenda.lugar,
+        estado: agenda.estado.nombre,
       };
     } catch (error) {
       console.error('Error fetching agenda by ID:', error);
