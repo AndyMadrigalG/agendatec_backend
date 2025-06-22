@@ -86,7 +86,6 @@ export class AgendasService {
           tipo: punto.tipo,
           duracionMin: punto.duracionMin,
           enunciado: punto.enunciado,
-          archivos: punto.archivos,
           contenido: punto.contenido,
           agendaId: punto.agendaId,
         };
