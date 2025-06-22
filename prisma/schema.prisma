@@ -19,13 +19,21 @@ model Usuario {
   Punto              Punto[]              @relation("UsuarioExpositor")
 }
 
-model Agenda {
-  id_Agenda Int      @id @default(autoincrement())
-  numero    String
-  tipo      String
-  fechaHora DateTime
-  lugar     String
+model AgendaStatus {
+  id_Estado Int      @id @default(autoincrement())
+  nombre    String   @unique
+  Agenda    Agenda[]
+}
 
+model Agenda {
+  id_Agenda          Int                  @id @default(autoincrement())
+  numero             String
+  tipo               String
+  fechaHora          DateTime
+  fechaFin           DateTime?
+  lugar              String
+  estadoId           Int                  @default(1) // Valor por defecto estado draft
+  estado             AgendaStatus         @relation(fields: [estadoId], references: [id_Estado])
   miembrosConvocados miembrosConvocados[]
   puntos             Punto[]
 }
@@ -51,31 +59,31 @@ model Punto {
   agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda], onDelete: Cascade)
   expositor   Usuario @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario], onDelete: Cascade)
 
-  @@index([agendaId], map: "Punto_agendaId_fkey")
-  @@index([expositorId], map: "Punto_expositorId_fkey")
-
   archivos Archivo[]
   Votacion Votacion?
+
+  @@index([agendaId], map: "Punto_agendaId_fkey")
+  @@index([expositorId], map: "Punto_expositorId_fkey")
 }
 
 model Archivo {
-  id_Archivo   Int    @id @default(autoincrement())
-  puntoId      Int
-  nombre       String
-  url          String
+  id_Archivo Int    @id @default(autoincrement())
+  puntoId    Int
+  nombre     String
+  url        String
 
-  punto        Punto  @relation(fields: [puntoId], references: [id_Punto], onDelete: Cascade)
+  punto Punto @relation(fields: [puntoId], references: [id_Punto], onDelete: Cascade)
 
   @@index([puntoId], map: "Archivo_puntoId_fkey")
 }
 
 model Votacion {
-  id_Punto    Int @id
-  punto      Punto @relation(fields: [id_Punto], references: [id_Punto], onDelete: Cascade)
-  votos_a_Favor Int
-  votos_en_Contra Int
+  id_Punto         Int    @id
+  punto            Punto  @relation(fields: [id_Punto], references: [id_Punto], onDelete: Cascade)
+  votos_a_Favor    Int
+  votos_en_Contra  Int
   votos_Abstencion Int
-  acuerdo String
+  acuerdo          String
 }
 
 model Miembro_De_Junta {
