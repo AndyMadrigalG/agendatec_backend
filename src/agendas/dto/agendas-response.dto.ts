@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDate,
-  IsNotEmpty,
+  IsNotEmpty, IsOptional,
   IsString,
 } from 'class-validator';
 
@@ -25,8 +25,12 @@ export class AgendasResponseDto {
     description: "Date and time the session will take place",
   })
   @IsNotEmpty()
-  @IsString()
   fechaHora: string
+
+  @ApiProperty({
+    description: "Date and time the session finished",
+  })
+  fechaFin: string | null;
 
   @ApiProperty({
     description: "Session's place",
@@ -35,6 +39,12 @@ export class AgendasResponseDto {
   @IsString()
   lugar: string;
 
+  @ApiProperty({
+    description: "Agenda's state",
+  })
+  @IsOptional()
+  @IsString()
+  estado?: string;
 }
 
 
