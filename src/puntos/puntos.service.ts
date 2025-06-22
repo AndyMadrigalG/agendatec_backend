@@ -25,7 +25,8 @@ export class PuntosService {
       const punto = await prisma.punto.findUnique({
         where: { id_Punto: id },
         include: {
-          Votacion: true, 
+          Votacion: true,
+          archivos: true,
         },
       });
 
@@ -44,6 +45,7 @@ export class PuntosService {
         contenido: punto.contenido,
         agendaId: punto.agendaId,
       };
+
       if (punto.Votacion) {
         puntoResponse.votacion = {
           id_Punto: punto.Votacion.id_Punto,
@@ -53,6 +55,7 @@ export class PuntosService {
           acuerdo: punto.Votacion.acuerdo,
         };
       }
+
       return puntoResponse;
 
     } catch (error) {
@@ -81,7 +84,6 @@ export class PuntosService {
           tipo: punto.tipo,
           duracionMin: punto.duracionMin,
           enunciado: punto.enunciado,
-          archivos: punto.archivos,
           contenido: punto.contenido,
           agendaId: punto.agendaId,
         };
@@ -111,7 +113,6 @@ export class PuntosService {
           tipo: punto.tipo,
           duracionMin: punto.duracionMin,
           enunciado: punto.enunciado,
-          archivos: punto.archivos,
           contenido: punto.contenido,
           agendaId: punto.agendaId,
         },
@@ -149,7 +150,13 @@ export class PuntosService {
       const updatedPunto = await prisma.punto.update({
         where: { id_Punto: id },
         data: {
-          ...punto,
+          expositorId: punto.expositorId,
+          numeracion: punto.numeracion,
+          tipo: punto.tipo,
+          duracionMin: punto.duracionMin,
+          enunciado: punto.enunciado,
+          contenido: punto.contenido,
+          agendaId: punto.agendaId,
         },
       });
 

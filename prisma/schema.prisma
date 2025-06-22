@@ -39,8 +39,6 @@ model miembrosConvocados {
   Convocado Usuario @relation(fields: [id_Convocado], references: [id_Usuario], onDelete: Cascade)
 }
 
-
-
 model Punto {
   id_Punto    Int     @id @default(autoincrement())
   numeracion  Int
@@ -48,7 +46,6 @@ model Punto {
   tipo        String
   duracionMin Int
   enunciado   String
-  archivos    String
   contenido   String
   agendaId    Int
   agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda], onDelete: Cascade)
@@ -57,7 +54,19 @@ model Punto {
   @@index([agendaId], map: "Punto_agendaId_fkey")
   @@index([expositorId], map: "Punto_expositorId_fkey")
 
+  archivos Archivo[]
   Votacion Votacion?
+}
+
+model Archivo {
+  id_Archivo   Int    @id @default(autoincrement())
+  puntoId      Int
+  nombre       String
+  url          String
+
+  punto        Punto  @relation(fields: [puntoId], references: [id_Punto], onDelete: Cascade)
+
+  @@index([puntoId], map: "Archivo_puntoId_fkey")
 }
 
 model Votacion {
