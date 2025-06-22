@@ -7,9 +7,6 @@ import { FileService } from "./file.service";
     imports: [
         MulterModule.register({
             dest: './uploads', // Directorio donde se guardarán los archivos subidos
-            limits: {
-                fileSize: 10 * 1024 * 1024, // Límite de tamaño de archivo (10 MB)
-            },
         }),
     ],
     controllers: [FilesController],
