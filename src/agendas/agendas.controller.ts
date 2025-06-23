@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UsePipes, ValidationPipe, HttpStatus, Post, Body, UseGuards, Delete } from '@nestjs/common';
+import { Controller, Get, Param, UsePipes, ValidationPipe, HttpStatus, Post, Body, UseGuards, Delete, Patch } from '@nestjs/common';
 import { AgendasService } from './agendas.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { AgendasResponseDto } from './dto/agendas-response.dto';
@@ -9,6 +9,13 @@ import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 export class AgendasController {
     constructor(private agendasService: AgendasService) {}
 
+    @Patch(':id')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({ status: HttpStatus.OK, type: AgendasResponseDto, description: 'Agenda actualizada exitosamente' })
+    async editAgenda(@Param('id') id: number, @Body() agenda: AgendasResponseDto): Promise<AgendasResponseDto | undefined> {
+        return this.agendasService.editAgenda(id, agenda);
+    }
+
     @Post()
     @UsePipes(new ValidationPipe({ transform: true }))
     @ApiResponse({ status: HttpStatus.CREATED, type: AgendasResponseDto, description: 'Agenda creada exitosamente' })
@@ -17,7 +24,6 @@ export class AgendasController {
     }
 
     @Get()
-    //@UseGuards(FirebaseAuthGuard)
     @UsePipes(new ValidationPipe({ transform: true }))
     @ApiResponse({ status: HttpStatus.OK, type: [AgendasResponseDto], description: 'Lista de agendas' })
     async getAgendas(): Promise<AgendasResponseDto[]> {
@@ -57,5 +63,12 @@ export class AgendasController {
     @ApiResponse({ status: HttpStatus.OK, description: 'Convocados añadidos exitosamente' })
     async postConvocados(@Param('id') id: number, @Body() convocados: any[]): Promise<any> {
         return this.agendasService.postConvocados(id, convocados);
+    }
+
+    @Patch(':id/status')
+    @UsePipes(new ValidationPipe({ transform: true }))
+    @ApiResponse({ status: HttpStatus.OK, description: 'Estado de agenda actualizado exitosamente' })
+    async editEstadoAgenda(@Param('id') id: number, @Body('estado') estado: number): Promise<AgendasResponseDto | undefined> {
+        return this.agendasService.editEstadoAgenda(id, estado);
     }
 }

@@ -5,6 +5,61 @@ import { PuntoResponseDto } from 'src/puntos/dto/puntos-response.dto';
 
 @Injectable()
 export class AgendasService {
+
+  async editEstadoAgenda(id: number, estado: number): Promise< any | undefined> {
+    try {
+
+      
+
+      const updatedAgenda = await prisma.agenda.update({
+        where: { id_Agenda: id },
+        data: {
+          estadoId: estado,
+        },
+      });
+
+      return {
+        id_Agenda: updatedAgenda.id_Agenda,
+        numero: updatedAgenda.numero,
+        tipo: updatedAgenda.tipo,
+        fechaHora: ""+updatedAgenda.fechaHora,
+        fechaFin: updatedAgenda.fechaFin ? ""+updatedAgenda.fechaFin : null,
+        lugar: updatedAgenda.lugar,
+        estadoId: updatedAgenda.estadoId,
+      };
+    }
+    catch (error) {
+      console.error('Error updating agenda state:', error);
+      throw new Error('Could not update agenda state');
+    }
+  }
+
+  async editAgenda(id: number, agenda: AgendasResponseDto): Promise<AgendasResponseDto | undefined> {
+    try {
+      const updatedAgenda = await prisma.agenda.update({
+        where: { id_Agenda: id },
+        data: {
+          numero: agenda.numero,
+          tipo: agenda.tipo,
+          fechaHora: new Date(agenda.fechaHora.replace('T', ' ')),
+          lugar: agenda.lugar,
+        },
+      });
+
+      return {
+        id_Agenda: updatedAgenda.id_Agenda,
+        numero: updatedAgenda.numero,
+        tipo: updatedAgenda.tipo,
+        fechaHora: ""+updatedAgenda.fechaHora,
+        fechaFin: updatedAgenda.fechaFin ? ""+updatedAgenda.fechaFin : null,
+        lugar: updatedAgenda.lugar,
+      };
+    } catch (error) {
+      console.error('Error updating agenda:', error);
+      throw new Error('Could not update agenda');
+    }
+  }
+
   async postAgenda(agenda: AgendasResponseDto): Promise<AgendasResponseDto> {
     try{
       const datetime = agenda.fechaHora.replace('T',' ')
@@ -35,7 +90,7 @@ export class AgendasService {
     try {
       const agendas = await prisma.agenda.findMany({
         include: {
-          estado: true, // Incluye el estado de cada agenda
+          estado: true,
         },
       });
 
