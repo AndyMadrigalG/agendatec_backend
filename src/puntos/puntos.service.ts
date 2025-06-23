@@ -187,12 +187,18 @@ export class PuntosService {
   }
 
   editVotacion(id_Punto: number, votacion: VotacionResponseDto): Promise<VotacionResponseDto> {
-    return prisma.votacion.update({
-      where: { id_Punto: id_Punto },
-      data: {
-        ...votacion,
-      },
-    });
+    try{
+      return prisma.votacion.update({
+        where: { id_Punto: id_Punto },
+        data: {
+          ...votacion,
+        },
+      });
+
+    } catch (error) {
+      console.error('Error updating votacion:', error);
+      throw new Error('Could not update votacion');
+    }
   }
 
   getVotaciones(){
