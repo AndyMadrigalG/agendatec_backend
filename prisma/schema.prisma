@@ -12,7 +12,7 @@ model Usuario {
   id_Usuario Int    @id @default(autoincrement())
   nombre     String
   email      String @unique
-  telefono   String
+  telefono   String 
 
   Miembro_De_Junta   Miembro_De_Junta[]
   miembrosConvocados miembrosConvocados[]
@@ -53,8 +53,8 @@ model Punto {
   expositorId Int
   tipo        String
   duracionMin Int
-  enunciado   String
-  contenido   String
+  enunciado   String @db.LongText
+  contenido   String @db.LongText
   agendaId    Int
   agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda], onDelete: Cascade)
   expositor   Usuario @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario], onDelete: Cascade)
@@ -83,7 +83,7 @@ model Votacion {
   votos_a_Favor    Int
   votos_en_Contra  Int
   votos_Abstencion Int
-  acuerdo          String
+  acuerdo          String @db.LongText
 }
 
 model Miembro_De_Junta {
