@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PuntoResponseDto } from './dto/puntos-response.dto';
 import prisma from 'src/prisma.service';
 import { VotacionResponseDto } from './dto/votacion-response.dto';
+import { create } from 'node:domain';
 
 @Injectable()
 export class PuntosService {
@@ -118,6 +119,10 @@ export class PuntosService {
         },
       });
 
+      if (createdPunto.tipo === 'aprobacion') {
+        await this.postVotacion(createdPunto.id_Punto);
+      }
+
       return createdPunto;
 
     } catch (error) {
@@ -147,6 +152,19 @@ export class PuntosService {
 
   async editPunto(id: number, punto: PuntoResponseDto): Promise<any> {
     try {
+
+      const votacion = await prisma.votacion.findUnique({
+        where: { id_Punto: id },
+      });
+
+      if (votacion && punto.tipo !== 'aprobacion') {
+        await prisma.votacion.delete({
+          where: { id_Punto: id },
+        });
+      } else if (!votacion && punto.tipo === 'aprobacion') {
+        await this.postVotacion(id);
+      }
+
       const updatedPunto = await prisma.punto.update({
         where: { id_Punto: id },
         data: {
