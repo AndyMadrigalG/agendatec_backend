@@ -119,7 +119,7 @@ export class PuntosService {
         },
       });
 
-      if (createdPunto.tipo === 'aprobacion') {
+      if (createdPunto.tipo === 'Aprobacion') {
         await this.postVotacion(createdPunto.id_Punto);
       }
 
@@ -157,14 +157,7 @@ export class PuntosService {
         where: { id_Punto: id },
       });
 
-      if (votacion && punto.tipo !== 'aprobacion') {
-        await prisma.votacion.delete({
-          where: { id_Punto: id },
-        });
-      } else if (!votacion && punto.tipo === 'aprobacion') {
-        await this.postVotacion(id);
-      }
-
+      
       const updatedPunto = await prisma.punto.update({
         where: { id_Punto: id },
         data: {
@@ -177,6 +170,14 @@ export class PuntosService {
           agendaId: punto.agendaId,
         },
       });
+      
+      if (votacion && updatedPunto.tipo !== 'Aprobacion') {
+        await prisma.votacion.delete({
+          where: { id_Punto: id },
+        });
+      } else if (!votacion && updatedPunto.tipo === 'Aprobacion') {
+        await this.postVotacion(id);
+      }
 
       return updatedPunto;
 
