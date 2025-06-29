@@ -124,8 +124,11 @@ export class AuthService {
             // Verificar el idToken con Firebase Admin
             const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
             if (decodedToken?.uid) {
-                console.log('idToken válido!');
+                // console.log('idToken válido!');
                 return {
+                    valid: true,
+                    userName: decodedToken.name,
+                    userEmail: decodedToken.email,
                     statusCode: HttpStatus.OK
                 };
             }
