@@ -35,7 +35,7 @@ export class AuthController {
         status: HttpStatus.OK,
         description: 'Busca los tokens de auth del usuario'
     })
-    async authorizeUser(@Headers('Authorization') authHeader: string, @Headers('x-refresh-token') refreshToken: string){
+    async authorizeUser(@Headers('Authorization') authHeader: string, @Headers('refresh-token') refreshToken: string){
         const idToken = authHeader?.split(' ')[1]; // Extraer el idToken del encabezado
         if (!idToken && !refreshToken) {
             return { valid: false, message: 'Tokens no encontrados' };
