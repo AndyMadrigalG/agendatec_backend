@@ -17,6 +17,9 @@ export class FilesController {
 
         const IntPuntoID = parseInt(puntoID);
         const uploadResult = await this.fileService.uploadFile(IntPuntoID, file);
-        return { message: 'File uploaded successfully', results: uploadResult };
+        return {
+            message: 'File uploaded successfully',
+            archivo: uploadResult
+        }
     }
 }

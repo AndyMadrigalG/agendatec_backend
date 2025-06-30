@@ -30,40 +30,30 @@ export class FileService {
                 console.error('Error uploading file:', err);
                 reject(err);
             });
-
-            blobStream.on('finish', () => {
+            blobStream.on('finish', async () => {
+                const publicUrl = `https://storage.googleapis.com/${this.bucketName}/${file.originalname}`;
                 // console.log(`File ${file.originalname} uploaded successfully.`);
-                resolve({
-                    message: 'File uploaded successfully',
-                    fileName: file.originalname,
-                    bucket: this.bucketName,
-                });
+
+                try {
+                    // Crear el registro en Prisma
+                    const fileRecord = await prisma.archivo.create({
+                        data: {
+                            nombre: file.originalname,
+                            url: publicUrl,
+                            puntoId: param_puntoID,
+                        },
+                    });
+                    //console.log('File record created in database:', fileRecord.url);
+                    resolve(fileRecord.url);
+                } catch (err) {
+                    console.error('Error making file public or saving to database:', err);
+                    reject(err);
+                }
             });
 
             blobStream.end(file.buffer); // Usa el buffer del archivo subido
         });
-        // Guarda la referencia del archivo en la base de datos
-        try {
-            const fileRecord = await prisma.archivo.create({
-                data: {
-                    nombre: file.originalname,
-                    url: `https://storage.googleapis.com/${this.bucketName}/${file.originalname}`,
-                    puntoId: param_puntoID, // cambiar a puntoId, tiene que venir del request
-                },
-            });
-            console.log('File record created in database:', fileRecord);
-            return {
-                message: 'File uploaded and record saved to database',
-                fileName: fileRecord.nombre,
-                url: fileRecord.url,
-                puntoId: fileRecord.puntoId,
-            };
-        } catch (error) {
-            console.error('Error saving file record to database:', error);
-            return {
-                message: 'File uploaded but could not save record to database',
-                error: error.message,
-            }
-        }
+        // Espera a que se complete la subida y se cree el registro en la base de datos
+        return response;
     }
 }
