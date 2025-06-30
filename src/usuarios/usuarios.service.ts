@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsuariosResponseDto } from './dto/usuarios-response.dto';
+import { UsuariosDto } from './dto/usuarios.dto';
 import prisma from '../prisma.service';
 import { MiembroJuntaDto } from 'src/miembroJunta/dto/miembroJunta.dto';
 import { UsuarioJuntaDto } from 'src/junta/dto/usuarioJunta.dto';
@@ -8,7 +8,7 @@ import { UsuarioJuntaDto } from 'src/junta/dto/usuarioJunta.dto';
 export class UsuariosService {
 
     // Obtener todos los usuarios
-    async getUsuarios(): Promise<UsuariosResponseDto[]> {
+    async getUsuarios(): Promise<UsuariosDto[]> {
         try {
             const usuarios = await prisma.usuario.findMany();
 
@@ -27,7 +27,7 @@ export class UsuariosService {
     }
 
     // Obtener un usuario por ID
-    async getUsuarioById(id: number): Promise<UsuariosResponseDto> {
+    async getUsuarioById(id: number): Promise<UsuariosDto> {
         try {
             const usuario = await prisma.usuario.findUnique({
                 where: { id_Usuario: id }
@@ -63,7 +63,7 @@ export class UsuariosService {
     }
 
     // Actualizar un usuario por ID
-    async updateUsuario(id: number, data: Partial<UsuariosResponseDto>): Promise<UsuariosResponseDto> {
+    async updateUsuario(id: number, data: Partial<UsuariosDto>): Promise<UsuariosDto> {
         try {
             const usuario = await prisma.usuario.update({
                 where: { id_Usuario: id },

@@ -2,7 +2,7 @@ import { Controller, Delete, Param, HttpStatus, UsePipes, ValidationPipe, Patch,
 import { UsuariosService } from './usuarios.service';
 import { Get } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { UsuariosResponseDto } from './dto/usuarios-response.dto';
+import { UsuariosDto } from './dto/usuarios.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -40,7 +40,7 @@ export class UsuariosController {
     @Patch(':id')
     @UsePipes(new ValidationPipe({ transform: true }))
     @ApiResponse({ status: HttpStatus.OK, description: 'Usuario actualizado' })
-    async updateUsuario(@Param('id') id: string, @Body() data: Partial<UsuariosResponseDto>) {
+    async updateUsuario(@Param('id') id: string, @Body() data: Partial<UsuariosDto>) {
         const numericId = parseInt(id, 10);
         if (isNaN(numericId)) {
             return {

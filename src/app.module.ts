@@ -18,9 +18,12 @@ import { JuntaService } from './junta/junta.service';
 import { MiembroJuntaController } from './miembroJunta/miembroJunta.controller';
 import { MiembroJuntaService } from './miembroJunta/miembroJunta.service';
 import { MiembroJuntaModule } from './miembroJunta/miembroJunta.module';
-import {FileService} from "./file/file.service";
-import {FilesController} from "./file/file.controller";
-import {FilesModule} from "./file/file.module";
+import { FileService } from "./file/file.service";
+import { FilesController } from "./file/file.controller";
+import { FilesModule } from "./file/file.module";
+import { TipoPerfilModule } from './tipo_perfil/tipo_perfil.module';
+import { TipoPerfilService } from "./tipo_perfil/tipo_perfil.service";
+import { TipoPerfilController } from "./tipo_perfil/tipo_perfil.controller";
 
 @Module({
   imports: [
@@ -31,9 +34,10 @@ import {FilesModule} from "./file/file.module";
       PuntosModule,
       JuntaModule,
       MiembroJuntaModule,
-      FilesModule
+      FilesModule,
+      TipoPerfilModule,
   ],
-  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController, MiembroJuntaController, FilesController],
-  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService, MiembroJuntaService, FileService],
+  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController, MiembroJuntaController, FilesController, TipoPerfilController],
+  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService, MiembroJuntaService, FileService, TipoPerfilService],
 })
 export class AppModule {}
