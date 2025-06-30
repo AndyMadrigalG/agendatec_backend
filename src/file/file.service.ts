@@ -46,7 +46,7 @@ export class FileService {
                     //console.log('File record created in database:', fileRecord.url);
                     resolve(fileRecord.url);
                 } catch (err) {
-                    console.error('Error making file public or saving to database:', err);
+                    console.error('Error saving to database:', err);
                     reject(err);
                 }
             });
