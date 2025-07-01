@@ -18,9 +18,12 @@ import { JuntaService } from './junta/junta.service';
 import { MiembroJuntaController } from './miembroJunta/miembroJunta.controller';
 import { MiembroJuntaService } from './miembroJunta/miembroJunta.service';
 import { MiembroJuntaModule } from './miembroJunta/miembroJunta.module';
-import {FileService} from "./file/file.service";
-import {FilesController} from "./file/file.controller";
-import {FilesModule} from "./file/file.module";
+import { FileService } from "./file/file.service";
+import { FilesController } from "./file/file.controller";
+import { FilesModule } from "./file/file.module";
+import { TipoPerfilModule } from './tipo_perfil/tipo_perfil.module';
+import { PerfilModule } from './perfil/perfil.module';
+
 
 @Module({
   imports: [
@@ -31,9 +34,12 @@ import {FilesModule} from "./file/file.module";
       PuntosModule,
       JuntaModule,
       MiembroJuntaModule,
-      FilesModule
+      FilesModule,
+      TipoPerfilModule,
+      PerfilModule,
+        // Aquí puedes agregar otros módulos que necesites importar
   ],
-  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController, MiembroJuntaController, FilesController],
-  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService, MiembroJuntaService, FileService],
+  controllers: [AppController, UsuariosController, AgendasController, PuntosController, JuntaController, MiembroJuntaController, FilesController ],
+  providers: [AppService, UsuariosService, AgendasService, PuntosService, JuntaService, MiembroJuntaService, FileService ],
 })
 export class AppModule {}

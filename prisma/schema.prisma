@@ -8,11 +8,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tipo_Perfil {
+  id_Tipo_Perfil Int    @id @default(autoincrement())
+  descripcion         String @unique
+
+  Perfil_Usuario Perfil_Usuario[]
+}
+
+model Perfil_Usuario {
+  id_Perfil    Int    @id @default(autoincrement())
+  username     String @unique
+  tipoPerfilId Int
+  adaptado_Id  Int
+
+  tipoPerfil Tipo_Perfil @relation(fields: [tipoPerfilId], references: [id_Tipo_Perfil], onDelete: Cascade)
+
+  @@index([tipoPerfilId], map: "Perfil_Usuario_tipoPerfilId_fkey")
+}
+
 model Usuario {
   id_Usuario Int    @id @default(autoincrement())
   nombre     String
   email      String @unique
-  telefono   String 
+  telefono   String
 
   Miembro_De_Junta   Miembro_De_Junta[]
   miembrosConvocados miembrosConvocados[]
@@ -49,16 +67,17 @@ model miembrosConvocados {
 
 model Punto {
   id_Punto    Int     @id @default(autoincrement())
+  agendaId    Int
   numeracion  Int
   expositorId Int
   tipo        String
   duracionMin Int
-  enunciado   String @db.LongText
-  contenido   String @db.LongText
-  agendaId    Int
+  enunciado   String  @db.LongText
+  contenido   String  @db.LongText
+
+
   agenda      Agenda  @relation(fields: [agendaId], references: [id_Agenda], onDelete: Cascade)
   expositor   Usuario @relation("UsuarioExpositor", fields: [expositorId], references: [id_Usuario], onDelete: Cascade)
-
   archivos Archivo[]
   Votacion Votacion?
 
@@ -79,22 +98,26 @@ model Archivo {
 
 model Votacion {
   id_Punto         Int    @id
-  punto            Punto  @relation(fields: [id_Punto], references: [id_Punto], onDelete: Cascade)
+
   votos_a_Favor    Int
   votos_en_Contra  Int
   votos_Abstencion Int
   acuerdo          String @db.LongText
+
+  punto            Punto  @relation(fields: [id_Punto], references: [id_Punto], onDelete: Cascade)
 }
 
+
 model Miembro_De_Junta {
+  id_Miembro_De_Junta Int              @id @default(autoincrement())
   usuario_id          Int
+  junta_id            Int
   cargo               String
   fecha_inicio        DateTime
   fecha_fin           DateTime?
-  junta_id            Int
-  id_Miembro_De_Junta Int       @id @default(autoincrement())
-  junta               Junta     @relation(fields: [junta_id], references: [id_Junta], onDelete: Cascade)
-  usuario             Usuario   @relation(fields: [usuario_id], references: [id_Usuario], onDelete: Cascade)
+
+  usuario             Usuario          @relation(fields: [usuario_id], references: [id_Usuario], onDelete: Cascade)
+  junta               Junta            @relation(fields: [junta_id], references: [id_Junta], onDelete: Cascade)
 
   @@index([junta_id], map: "Miembro_De_Junta_junta_id_fkey")
   @@index([usuario_id], map: "Miembro_De_Junta_usuario_id_fkey")
@@ -103,5 +126,6 @@ model Miembro_De_Junta {
 model Junta {
   id_Junta          Int                @id @default(autoincrement())
   nombre            String
+
   Miembros_De_Junta Miembro_De_Junta[]
 }
