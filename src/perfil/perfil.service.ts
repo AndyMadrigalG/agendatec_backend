@@ -111,6 +111,9 @@ export class PerfilService {
             } else if (tipo_perfil === 'Miembro De Junta') {
                 resultado = await prisma.miembro_De_Junta.findUnique({
                     where: { id_Miembro_De_Junta: adaptado_id },
+                    include: {
+                        usuario: true,
+                    },
                 });
 
                 if (!resultado) {
