@@ -11,10 +11,8 @@ export interface Perfil_Usuario {
     id_Perfil: number;
     username: string;
     tipoPerfil: string;
-    id_Usuario: number;
-    nombre: string;
-    email: string;
-    telefono: string;
+    adaptado_Id: number;
+    detallesAdaptado?: any; // Información adicional del adaptado
 }
 
 @Injectable()
@@ -23,20 +21,28 @@ export class PerfilService {
         try {
             const perfiles = await prisma.perfil_Usuario.findMany({
                 include: {
-                    usuario: true,     // Incluye la relación con usuario
-                    tipoPerfil: true, // Incluye la relación con tipoPerfil
+                    tipoPerfil: true,
                 },
             });
 
-            return perfiles.map(perfil => ({
-                id_Perfil: perfil.id_Perfil,
-                username: perfil.username,
-                tipoPerfil: perfil.tipoPerfil.descripcion,
-                id_Usuario: perfil.usuario.id_Usuario,
-                nombre: perfil.usuario.nombre,
-                email: perfil.usuario.email,
-                telefono: perfil.usuario.telefono,
-            }));
+            const perfilesConDetalles = await Promise.all(
+                perfiles.map(async (perfil) => {
+                    const detallesAdaptado = await this.procesarAdaptadoId(
+                        perfil.adaptado_Id,
+                        perfil.tipoPerfil.descripcion
+                    );
+
+                    return {
+                        id_Perfil: perfil.id_Perfil,
+                        username: perfil.username,
+                        tipoPerfil: perfil.tipoPerfil.descripcion,
+                        adaptado_Id: perfil.adaptado_Id,
+                        detallesAdaptado,
+                    };
+                })
+            );
+
+            return perfilesConDetalles;
         } catch (error) {
             console.error('Error al obtener perfiles con información:', error);
             throw new Error('Error al obtener perfiles con información');
@@ -64,7 +70,6 @@ export class PerfilService {
             const perfil = await prisma.perfil_Usuario.findUnique({
                 where: { id_Perfil: id },
                 include: {
-                    usuario: true,
                     tipoPerfil: true,
                 },
             });
@@ -73,14 +78,17 @@ export class PerfilService {
                 throw new Error(`Perfil de usuario con ID ${id} no encontrado.`);
             }
 
+            const detallesAdaptado = await this.procesarAdaptadoId(
+                perfil.adaptado_Id,
+                perfil.tipoPerfil.descripcion
+            );
+
             return {
                 id_Perfil: perfil.id_Perfil,
                 username: perfil.username,
                 tipoPerfil: perfil.tipoPerfil.descripcion,
-                id_Usuario: perfil.usuario.id_Usuario,
-                nombre: perfil.usuario.nombre,
-                email: perfil.usuario.email,
-                telefono: perfil.usuario.telefono,
+                adaptado_Id: perfil.adaptado_Id,
+                detallesAdaptado,
             };
         } catch (error) {
             console.error('Error al obtener perfil de usuario por ID:', error);
@@ -88,4 +96,34 @@ export class PerfilService {
         }
     }
 
+    async procesarAdaptadoId(adaptado_id: number, tipo_perfil: string): Promise<any> {
+        try {
+            let resultado;
+
+            if (tipo_perfil === 'Admin') {
+                resultado = await prisma.usuario.findUnique({
+                    where: { id_Usuario: adaptado_id },
+                });
+
+                if (!resultado) {
+                    throw new Error(`Usuario con ID ${adaptado_id} no encontrado.`);
+                }
+            } else if (tipo_perfil === 'Miembro De Junta') {
+                resultado = await prisma.miembro_De_Junta.findUnique({
+                    where: { id_Miembro_De_Junta: adaptado_id },
+                });
+
+                if (!resultado) {
+                    throw new Error(`Miembro de junta con ID ${adaptado_id} no encontrado.`);
+                }
+            } else {
+                throw new Error(`Error al obtener perfil`);
+            }
+
+            return resultado;
+        } catch (error) {
+            console.error('Error al procesar adaptado_Id:', error);
+            throw new Error('No se pudo procesar el adaptado_Id.');
+        }
+    }
 }
