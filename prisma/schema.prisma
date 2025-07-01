@@ -13,7 +13,6 @@ model Tipo_Perfil {
   descripcion         String @unique
 
   Perfil_Usuario Perfil_Usuario[]
-  Perfil_Miembro Perfil_Miembro[]
 }
 
 model Perfil_Usuario {
@@ -23,9 +22,7 @@ model Perfil_Usuario {
   adaptado_Id  Int
 
   tipoPerfil Tipo_Perfil @relation(fields: [tipoPerfilId], references: [id_Tipo_Perfil], onDelete: Cascade)
-  usuario    Usuario     @relation(fields: [adaptado_Id], references: [id_Usuario], onDelete: Cascade)
 
-  @@index([adaptado_Id], map: "Perfil_Usuario_usuarioId_fkey")
   @@index([tipoPerfilId], map: "Perfil_Usuario_tipoPerfilId_fkey")
 }
 
@@ -35,7 +32,6 @@ model Usuario {
   email      String @unique
   telefono   String
 
-  Perfil_Usuario     Perfil_Usuario[]
   Miembro_De_Junta   Miembro_De_Junta[]
   miembrosConvocados miembrosConvocados[]
   Punto              Punto[]              @relation("UsuarioExpositor")
@@ -111,18 +107,6 @@ model Votacion {
   punto            Punto  @relation(fields: [id_Punto], references: [id_Punto], onDelete: Cascade)
 }
 
-model Perfil_Miembro {
-  id_Perfil    Int    @id @default(autoincrement())
-  adaptado_Id  Int
-  tipoPerfilId Int
-  username     String
-
-  miembro    Miembro_De_Junta @relation(fields: [adaptado_Id], references: [id_Miembro_De_Junta], onDelete: Cascade)
-  tipoPerfil Tipo_Perfil      @relation(fields: [tipoPerfilId], references: [id_Tipo_Perfil], onDelete: Cascade)
-
-  @@index([adaptado_Id], map: "Perfil_Miembro_miembroId_fkey")
-  @@index([tipoPerfilId], map: "Perfil_Miembro_tipoPerfilId_fkey")
-}
 
 model Miembro_De_Junta {
   id_Miembro_De_Junta Int              @id @default(autoincrement())
@@ -134,7 +118,6 @@ model Miembro_De_Junta {
 
   usuario             Usuario          @relation(fields: [usuario_id], references: [id_Usuario], onDelete: Cascade)
   junta               Junta            @relation(fields: [junta_id], references: [id_Junta], onDelete: Cascade)
-  Perfil_Miembro      Perfil_Miembro[]
 
   @@index([junta_id], map: "Miembro_De_Junta_junta_id_fkey")
   @@index([usuario_id], map: "Miembro_De_Junta_usuario_id_fkey")
